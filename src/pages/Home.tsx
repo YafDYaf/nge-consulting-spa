@@ -5,6 +5,7 @@ import { ArrowButton, GhostLink } from '../components/ui';
 import { useRdv } from '../components/rdv-context';
 import { DEADLINES, EINVOICE_CHECKS, FAQ, METHOD, ORGS, REVIEWS, SITUATIONS } from '../data/content';
 import { SITE } from '../site';
+import { articleBySlug } from '../data/articles';
 import logo from '../assets/logo-nge.png';
 
 const sectionX = 'px-[clamp(20px,5vw,72px)]';
@@ -324,10 +325,13 @@ function Faq() {
 }
 
 function ResourcesTeaser() {
-  const cards = [
-    { cat: 'Fiscalité', title: 'Facture électronique : ce que la loi de finances 2026 change pour vous', cls: 'bg-sun text-navy', catCls: '' },
-    { cat: 'Création', title: 'Créer sa société au guichet unique de l’ANPI : le dossier à préparer', cls: 'bg-ice text-navy', catCls: '' },
-    { cat: 'Paie', title: 'Premier salarié : vos obligations auprès de la CNSS et de la CNAMGS', cls: 'bg-navy text-white', catCls: 'text-sky-soft' },
+  const picks = ['preparer-son-calendrier-fiscal', 'creer-son-entreprise-au-gabon', 'paie-obligations-cnss-cnamgs-employeurs']
+    .map((slug) => articleBySlug(slug))
+    .filter((a) => a !== undefined);
+  const styles = [
+    { cls: 'bg-sun text-navy', catCls: '' },
+    { cls: 'bg-ice text-navy', catCls: '' },
+    { cls: 'bg-navy text-white', catCls: 'text-sky-soft' },
   ];
   return (
     <section id="ressources" className={`bg-white ${sectionX} pb-[clamp(56px,8vw,104px)] text-navy`}>
@@ -339,11 +343,11 @@ function ResourcesTeaser() {
           </Link>
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-5">
-          {cards.map((c) => (
-            <Link key={c.title} to="/ressources" className={`lift box-border flex min-h-[260px] flex-col gap-3.5 rounded-card p-7 no-underline ${c.cls}`}>
-              <span className={`text-sm font-bold ${c.catCls}`}>{c.cat}</span>
-              <h3 className="m-0 text-2xl font-extrabold leading-[1.2] tracking-[-0.02em]">{c.title}</h3>
-              <span className="mt-auto text-sm opacity-80">[Date de publication]</span>
+          {picks.map((a, i) => (
+            <Link key={a.slug} to={a.path} className={`lift box-border flex min-h-[260px] flex-col gap-3.5 rounded-card p-7 no-underline ${styles[i].cls}`}>
+              <span className={`text-sm font-bold ${styles[i].catCls}`}>{a.category}</span>
+              <h3 className="m-0 text-2xl font-extrabold leading-[1.2] tracking-[-0.02em]">{a.title}</h3>
+              <span className="mt-auto text-sm font-bold opacity-80">Lire · {a.readingMinutes} min</span>
             </Link>
           ))}
         </div>

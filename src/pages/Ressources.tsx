@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Download, FileText, Search } from 'lucide-react';
 import { ArrowButton, Pill, SplitTitle } from '../components/ui';
 import { useRdv } from '../components/rdv-context';
-import { ARTICLE_CATS, ARTICLE_TONES, ARTICLES, GUIDES } from '../data/content';
+import { GUIDES } from '../data/content';
+import { ARTICLE_CATEGORIES as ARTICLE_CATS, ARTICLES, CATEGORY_STYLE, articleBySlug } from '../data/articles';
 import featured from '../assets/photos/libreville-commerce.webp';
 
 const X = 'px-[clamp(20px,5vw,72px)]';
@@ -13,8 +15,12 @@ export default function Ressources() {
   const [query, setQuery] = useState('');
   const q = query.trim().toLowerCase();
   const list = ARTICLES.filter(
-    (a) => (cat === 0 || a.cat === ARTICLE_CATS[cat]) && (!q || `${a.title} ${a.summary} ${a.cat}`.toLowerCase().includes(q)),
+    (a) =>
+      (cat === 0 || a.category === ARTICLE_CATS[cat]) &&
+      (!q || `${a.title} ${a.intro} ${a.category} ${a.blocks.map((b) => b.text).join(' ')}`.toLowerCase().includes(q)),
   );
+  // Article mis en avant : le calendrier fiscal (évoque aussi E-Fact).
+  const top = articleBySlug('preparer-son-calendrier-fiscal') ?? ARTICLES[0];
 
   return (
     <>
@@ -42,7 +48,7 @@ export default function Ressources() {
 
       <div className="bg-white text-navy">
         <section className={`${X} pt-[clamp(40px,6vw,72px)]`}>
-          <article className="lift mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] overflow-hidden rounded-panel bg-sun">
+          <Link to={top.path} className="lift mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] overflow-hidden rounded-panel bg-sun text-navy no-underline">
             <img
               src={featured}
               alt="Clients en caisse dans un supermarché de Libreville, drapeaux du Gabon au premier plan"
@@ -53,16 +59,12 @@ export default function Ressources() {
               className="h-full min-h-[clamp(220px,28vw,380px)] w-full object-cover"
             />
             <div className="flex flex-col gap-4 p-[clamp(24px,4vw,48px)]">
-              <span className="text-[15px] font-bold">À la une, fiscalité</span>
-              <h2 className="m-0 text-[clamp(28px,3.2vw,42px)] font-extrabold leading-[1.08] tracking-[-0.03em]">
-                Facture électronique : ce que la loi de finances 2026 change pour votre entreprise.
-              </h2>
-              <p className="m-0 text-[17px]">
-                Qui est concerné, ce qu’est une facture normalisée, et pourquoi elle conditionne la déduction de vos charges et la récupération de la TVA.
-              </p>
-              <span className="mt-auto text-sm">[Date de publication] — [Auteur]</span>
+              <span className="text-[15px] font-bold">À la une, {top.category.toLowerCase()}</span>
+              <h2 className="m-0 text-[clamp(28px,3.2vw,42px)] font-extrabold leading-[1.08] tracking-[-0.03em]">{top.title}</h2>
+              <p className="m-0 text-[17px]">{top.summary}</p>
+              <span className="mt-auto text-sm font-bold underline underline-offset-4">Lire l’article · {top.readingMinutes} min</span>
             </div>
-          </article>
+          </Link>
         </section>
 
         <section className={`${X} pb-[clamp(56px,8vw,104px)] pt-[clamp(40px,6vw,72px)]`}>
@@ -74,16 +76,16 @@ export default function Ressources() {
             {list.length > 0 ? (
               <div className="grid grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))] gap-5">
                 {list.map((a) => (
-                  <article key={a.title} className="lift flex flex-col overflow-hidden rounded-card border border-[#E1E9F1] bg-ice-pale">
-                    <div className="box-border flex h-[168px] items-end p-4" style={{ background: ARTICLE_TONES[a.cat] }}>
-                      <span className="inline-flex min-h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold">{a.cat}</span>
+                  <Link key={a.slug} to={a.path} className="lift flex flex-col overflow-hidden rounded-card border border-[#E1E9F1] bg-ice-pale text-navy no-underline">
+                    <div className="box-border flex h-[150px] items-end p-4" style={{ background: CATEGORY_STYLE[a.category]?.tone ?? '#E4F1F8' }}>
+                      <span className="inline-flex min-h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold">{a.category}</span>
                     </div>
                     <div className="flex flex-auto flex-col gap-2.5 p-[22px]">
                       <h3 className="m-0 text-xl font-extrabold leading-[1.25] tracking-[-0.015em]">{a.title}</h3>
                       <p className="m-0 text-[15px] text-ink">{a.summary}</p>
-                      <span className="mt-auto pt-2 text-[13px] text-ink-muted">[Date] — [Auteur]</span>
+                      <span className="mt-auto pt-2 text-[13px] font-bold text-royal">Lire · {a.readingMinutes} min</span>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -95,7 +97,7 @@ export default function Ressources() {
                 </button>
               </div>
             )}
-            <p className="m-0 text-[13px] text-ink-muted">Sujets proposés pour le lancement. Chaque article sera rédigé, daté et vérifié au regard des textes en vigueur avant publication.</p>
+            <p className="m-0 text-[13px] text-ink-muted">Articles d’information générale. Les règles évoluent : faites vérifier votre situation avant toute décision.</p>
           </div>
         </section>
 
