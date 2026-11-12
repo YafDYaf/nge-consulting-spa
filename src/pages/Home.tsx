@@ -7,6 +7,7 @@ import { IndexRow, OutlineNumber, ParallaxBand, RevealWords, ScrollFillText } fr
 import { useRdv } from '../components/rdv-context';
 import { DEADLINES, EINVOICE_CHECKS, FAQ, METHOD, ORGS, REVIEWS, SERVICES, SITUATIONS } from '../data/content';
 import { SITE } from '../site';
+import { articleBySlug } from '../data/articles';
 import logo from '../assets/logo-nge.png';
 import teamPhoto from '../assets/photos/equipe-reunion.webp';
 
@@ -314,11 +315,9 @@ function Faq() {
 }
 
 function Reads() {
-  const reads = [
-    { cat: 'Fiscalité', title: 'Facture électronique : ce que la loi de finances 2026 change pour vous' },
-    { cat: 'Création', title: 'Créer sa société au guichet unique de l’ANPI : le dossier à préparer' },
-    { cat: 'Paie', title: 'Premier salarié : vos obligations auprès de la CNSS et de la CNAMGS' },
-  ];
+  const reads = ['preparer-son-calendrier-fiscal', 'creer-son-entreprise-au-gabon', 'paie-obligations-cnss-cnamgs-employeurs']
+    .map((slug) => articleBySlug(slug))
+    .filter((a) => a !== undefined);
   return (
     <section id="ressources" className={`bg-white ${X} pb-[clamp(50px,6.5vw,94px)] text-navy`}>
       <div className={`${wrap} flex flex-col gap-8`}>
@@ -327,8 +326,8 @@ function Reads() {
           <Link to="/ressources" className="sweep-link pb-1 text-base font-bold text-navy">Tous les conseils</Link>
         </div>
         <nav aria-label="Articles à la une" className="border-t border-[#C9D9E6]">
-          {reads.map((r) => (
-            <IndexRow key={r.title} tone="light" to="/ressources" index={r.cat} title={r.title} />
+          {reads.map((r, i) => (
+            <IndexRow key={r.slug} tone="light" to={r.path} index={String(i + 1).padStart(2, '0')} title={r.title} text={`${r.category} · ${r.readingMinutes} min de lecture`} />
           ))}
         </nav>
       </div>

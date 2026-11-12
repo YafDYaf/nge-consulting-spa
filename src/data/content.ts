@@ -189,27 +189,6 @@ export const ADVICE_BY_NEED = [
   { title: 'Conseil & pilotage', text: 'des tableaux de bord et un suivi de trésorerie pour décider avec des chiffres fiables.' },
 ];
 
-export const ARTICLE_CATS = ['Tous les thèmes', 'Comptabilité', 'Fiscalité', 'Paie et social', 'Création', 'Gestion'] as const;
-
-export const ARTICLE_TONES: Record<string, string> = {
-  Comptabilité: '#C8DCEA',
-  Fiscalité: '#FCD116',
-  'Paie et social': '#01AAF2',
-  Création: '#E4F1F8',
-  Gestion: '#B9C9D9',
-};
-
-export const ARTICLES = [
-  { cat: 'Création', title: 'Créer son entreprise au Gabon : par où commencer ?', summary: 'Les étapes au guichet unique de l’ANPI, du choix des statuts à l’immatriculation.' },
-  { cat: 'Comptabilité', title: 'Les documents comptables qu’une PME doit organiser', summary: 'Ce qu’il faut conserver, classer et transmettre, mois après mois.' },
-  { cat: 'Fiscalité', title: 'Comment préparer son calendrier fiscal ?', summary: 'TVA, patente, retenues, résultats : construire son année sans oublier une date.' },
-  { cat: 'Paie et social', title: 'Les principales obligations sociales de l’employeur', summary: 'CNSS, CNAMGS, bulletins et déclarations : l’essentiel à connaître.' },
-  { cat: 'Gestion', title: 'Trésorerie : les indicateurs à suivre chaque mois', summary: 'Quelques chiffres simples pour anticiper plutôt que subir.' },
-  { cat: 'Création', title: 'Cinq habitudes de gestion à adopter dès le lancement', summary: 'Compte bancaire dédié, factures classées, suivi hebdomadaire : les bons réflexes.' },
-  { cat: 'Comptabilité', title: 'Comprendre les états financiers sous le SYSCOHADA', summary: 'Bilan, compte de résultat, notes annexes : comment les lire.' },
-  { cat: 'Gestion', title: 'Préparer ses documents avant un rendez-vous comptable', summary: 'La liste des pièces qui font gagner du temps au premier échange.' },
-];
-
 export const GUIDES = [
   { title: 'Calendrier fiscal et social de la PME', meta: 'PDF, une page, à produire par le cabinet' },
   { title: 'Check-list : préparer son rendez-vous comptable', meta: 'PDF, deux pages, à produire par le cabinet' },

@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight, Clock } from 'lucide-react';
+import { ArrowLeft, Clock } from 'lucide-react';
+import { IndexRow } from '../components/effects';
 import { ArrowButton } from '../components/ui';
 import { useRdv } from '../components/rdv-context';
 import { articleBySlug, CATEGORY_STYLE, inlineParts, relatedArticles } from '../data/articles';
@@ -121,17 +122,11 @@ export default function Article() {
 
         <section className="mx-auto mt-[clamp(56px,8vw,96px)] flex max-w-[1100px] flex-col gap-6 border-t border-[#D5DEE8] pt-10">
           <h2 className="m-0 text-[clamp(24px,2.6vw,34px)] font-extrabold tracking-[-0.025em]">À lire aussi</h2>
-          <div className="grid gap-5 md:grid-cols-3">
-            {related.map((r) => (
-              <Link key={r.slug} to={r.path} className="lift flex flex-col gap-3 rounded-card border border-[#E1E9F1] bg-ice-pale p-6 text-navy no-underline">
-                <span className="text-[13px] font-bold text-royal">{r.category}</span>
-                <span className="text-lg font-extrabold leading-snug tracking-[-0.01em]">{r.title}</span>
-                <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-bold">
-                  Lire l’article <ArrowUpRight aria-hidden="true" size={15} />
-                </span>
-              </Link>
+          <nav aria-label="Articles liés" className="border-t-2 border-navy">
+            {related.map((r, i) => (
+              <IndexRow key={r.slug} tone="light" to={r.path} index={String(i + 1).padStart(2, '0')} title={r.title} text={`${r.category} · ${r.readingMinutes} min`} />
             ))}
-          </div>
+          </nav>
         </section>
       </div>
     </article>

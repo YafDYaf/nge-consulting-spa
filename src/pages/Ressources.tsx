@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { ArrowButton, SplitTitle } from '../components/ui';
 import { ParallaxBand, RevealWords } from '../components/effects';
 import { useRdv } from '../components/rdv-context';
-import { ARTICLE_CATS, ARTICLES, GUIDES } from '../data/content';
+import { GUIDES } from '../data/content';
+import { ARTICLE_CATEGORIES as ARTICLE_CATS, ARTICLES, articleBySlug } from '../data/articles';
 import featured from '../assets/photos/libreville-commerce.webp';
 
 const X = 'px-[clamp(20px,5vw,72px)]';
@@ -15,8 +17,12 @@ export default function Ressources() {
   const [query, setQuery] = useState('');
   const q = query.trim().toLowerCase();
   const list = ARTICLES.filter(
-    (a) => (cat === 0 || a.cat === ARTICLE_CATS[cat]) && (!q || `${a.title} ${a.summary} ${a.cat}`.toLowerCase().includes(q)),
+    (a) =>
+      (cat === 0 || a.category === ARTICLE_CATS[cat]) &&
+      (!q || `${a.title} ${a.intro} ${a.category} ${a.blocks.map((b) => b.text).join(' ')}`.toLowerCase().includes(q)),
   );
+  // Article mis en avant : le calendrier fiscal (évoque aussi E-Fact).
+  const top = articleBySlug('preparer-son-calendrier-fiscal') ?? ARTICLES[0];
 
   return (
     <>
@@ -52,12 +58,10 @@ export default function Ressources() {
 
       <ParallaxBand src={featured} alt="Clients en caisse dans un supermarché de Libreville, drapeaux du Gabon au premier plan" veil="bg-gradient-to-t from-navy via-navy/80 to-navy/20" className={`${X} pb-[clamp(39px,5.2vw,62px)] pt-[clamp(98px,13vw,182px)]`}>
         <article className={`${wrap} flex flex-col gap-5`}>
-          <span className="text-sm font-bold uppercase tracking-[0.2em] text-sun">À la une · Fiscalité</span>
-          <RevealWords text="Facture électronique : ce que la loi de finances 2026 change pour votre entreprise." className="m-0 max-w-[1000px] text-[clamp(26px,3vw,45px)] font-heavy leading-[1] tracking-tightest" />
-          <p className="m-0 max-w-[640px] text-base text-mist">
-            Qui est concerné, ce qu’est une facture normalisée, et pourquoi elle conditionne la déduction de vos charges et la récupération de la TVA.
-          </p>
-          <span className="text-sm text-mist-3">[Date de publication] — [Auteur]</span>
+          <span className="text-sm font-bold uppercase tracking-[0.2em] text-sun">À la une · {top.category}</span>
+          <RevealWords text={top.title} className="m-0 max-w-[1000px] text-[clamp(26px,3vw,45px)] font-heavy leading-[1] tracking-tightest" />
+          <p className="m-0 max-w-[640px] text-base text-mist">{top.summary}</p>
+          <Link to={top.path} className="sweep-link self-start pb-1 text-base font-bold text-white">Lire l’article · {top.readingMinutes} min →</Link>
         </article>
       </ParallaxBand>
 
@@ -70,12 +74,14 @@ export default function Ressources() {
           {list.length > 0 ? (
             <ol className="m-0 list-none border-t-2 border-navy p-0">
               {list.map((a) => (
-                <li key={a.title} className="group grid gap-x-10 gap-y-2 border-b border-[#D5DEE8] py-5 transition-[padding] duration-500 ease-out hover:pl-3 md:grid-cols-[160px_1.3fr_1fr]">
-                  <span className="text-sm font-bold uppercase tracking-[0.14em] text-royal">{a.cat}</span>
-                  <h3 className="m-0 text-[clamp(19px,1.8vw,24px)] font-extrabold leading-[1.15] tracking-[-0.02em] group-hover:underline group-hover:decoration-sky group-hover:decoration-2 group-hover:underline-offset-[6px]">{a.title}</h3>
-                  <p className="m-0 text-base text-ink">
-                    {a.summary} <span className="block pt-2 text-[13px] text-ink-muted">[Date] — [Auteur]</span>
-                  </p>
+                <li key={a.slug} className="border-b border-[#D5DEE8]">
+                  <Link to={a.path} className="group grid gap-x-10 gap-y-2 py-5 text-navy no-underline transition-[padding] duration-500 ease-out hover:pl-3 md:grid-cols-[170px_1.3fr_1fr]">
+                    <span className="text-sm font-bold uppercase tracking-[0.14em] text-royal">{a.category}</span>
+                    <h3 className="m-0 text-[clamp(19px,1.8vw,24px)] font-extrabold leading-[1.15] tracking-[-0.02em] group-hover:underline group-hover:decoration-sky group-hover:decoration-2 group-hover:underline-offset-[6px]">{a.title}</h3>
+                    <p className="m-0 text-base text-ink">
+                      {a.summary} <span className="block pt-2 text-[13px] font-bold text-royal">Lire · {a.readingMinutes} min</span>
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ol>
@@ -88,7 +94,7 @@ export default function Ressources() {
               </button>
             </div>
           )}
-          <p className="m-0 text-[13px] text-ink-muted">Sujets proposés pour le lancement. Chaque article sera rédigé, daté et vérifié au regard des textes en vigueur avant publication.</p>
+          <p className="m-0 text-[13px] text-ink-muted">Articles d’information générale. Les règles évoluent : faites vérifier votre situation avant toute décision.</p>
         </div>
       </section>
 
