@@ -2,35 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Styles globaux et reset */
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@layer base {
+  :root {
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    min-width: 320px;
+    @apply bg-navy font-sans text-white;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  summary:focus-visible {
+    outline: 3px solid theme("colors.sun.DEFAULT");
+    outline-offset: 3px;
+  }
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid theme("colors.sky.DEFAULT");
+    outline-offset: 2px;
+  }
 }
 
-html {
-  scroll-behavior: smooth; /* Pour le défilement fluide */
+@layer components {
+  /* Titre en deux lignes qui montent depuis un masque */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+  .line-mask > span {
+    display: block;
+    @apply animate-rise;
+  }
+  .line-mask:nth-child(2) > span {
+    animation-delay: 0.14s;
+  }
+  .fade-d1 {
+    @apply animate-fade;
+    animation-delay: 0.45s;
+  }
+  .fade-d2 {
+    @apply animate-fade;
+    animation-delay: 0.6s;
+  }
+
+  /* Bandeau défilant : pause au survol */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* Cartes qui se soulèvent */
+  .lift {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(4, 14, 28, 0.28);
+  }
+
+  /* Flèche des boutons pilule */
+  .arrow-btn .arrow {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .arrow-btn:hover .arrow {
+    transform: rotate(45deg);
+  }
+
+  .swap {
+    transition: background-color 0.55s ease, color 0.55s ease, border-color 0.55s ease;
+  }
+
+  /* Dates du calendrier : apparition liée au défilement (navigateurs compatibles) */
+  @supports (animation-timeline: view()) {
+    .scroll-pop {
+      animation: pop linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .value-row .value-name {
+    transition: color 0.35s ease, padding-left 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .value-row:hover .value-name {
+    color: theme("colors.sun.DEFAULT");
+    padding-left: 12px;
+  }
+
+  .h-display {
+    @apply m-0 font-extrabold leading-none tracking-tighter2;
+  }
+  .sr-only-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  @apply bg-brand-light text-brand-dark; /* Utilise les couleurs définies dans la config */
-}
-
-/* Scrollbar personnalisée (optionnel mais joli) */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }

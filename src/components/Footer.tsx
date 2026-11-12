@@ -1,54 +1,45 @@
-import { Calculator, Linkedin, Twitter, Facebook, Mail, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { NAV, SITE } from '../site';
+import { SERVICES } from '../data/content';
+import { Logo } from './Navbar';
 
 export const Footer = () => (
-  <footer className="bg-brand-dark text-white pt-20 pb-10">
-    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-700 pb-12">
-      <div className="col-span-1 md:col-span-1 space-y-4">
-        <div className="flex items-center gap-2">
-          <Calculator className="text-brand-primary" size={24} />
-          <span className="text-xl font-bold tracking-tighter">N.G.E Consulting</span>
-        </div>
-        <p className="text-gray-400 text-sm">
-          Toujours disposez a mieux vous servir.
-        </p>
-        <div className="flex gap-4">
-          <Linkedin className="hover:text-brand-primary cursor-pointer transition-colors" size={20} />
-          <Twitter className="hover:text-brand-primary cursor-pointer transition-colors" size={20} />
-          <Facebook className="hover:text-brand-primary cursor-pointer transition-colors" size={20} />
-        </div>
+  <footer className="bg-navy-900 px-[clamp(20px,5vw,72px)] pb-7 pt-[clamp(48px,6vw,72px)] text-[15px] text-mist-4">
+    <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-9">
+      <div className="flex flex-col gap-3.5">
+        <Link to="/" className="flex items-center gap-3 text-white no-underline">
+          <Logo alt="" />
+          <span className="text-[19px] font-extrabold">{SITE.name}</span>
+        </Link>
+        <span>{SITE.tagline}</span>
       </div>
-
-      <div>
-        <h4 className="font-bold mb-6">Liens rapides</h4>
-        <ul className="space-y-4 text-gray-400 text-sm">
-          <li><a href="#home" className="hover:text-white transition-colors">Accueil</a></li>
-          <li><a href="#missions" className="hover:text-white transition-colors">Nos Missions</a></li>
-          <li><a href="#about" className="hover:text-white transition-colors">À propos</a></li>
-          <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 className="font-bold mb-6">Services</h4>
-        <ul className="space-y-4 text-gray-400 text-sm">
-          <li>Comptabilite</li>
-          <li>Conseil Fiscal</li>
-          <li>Gestion Sociale</li>
-          <li>Paie</li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 className="font-bold mb-6">Contact</h4>
-        <ul className="space-y-4 text-gray-400 text-sm">
-          <li className="flex items-center gap-3"><Phone size={16} /> 011 76 29 55</li>
-          <li className="flex items-center gap-3"><Phone size={16} /> 011 76 29 55</li>
-          <li className="flex items-center gap-3"><Mail size={16} /> ngeconsulting.gabon@gmail.com</li>
-        </ul>
-      </div>
+      <nav aria-label="Pages du site" className="flex flex-col gap-1">
+        <span className="pb-1.5 font-extrabold text-white">Le site</span>
+        {NAV.map((l) => (
+          <Link key={l.to} to={l.to} className="py-1.5 text-mist-4 no-underline hover:text-white">
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+      <nav aria-label="Nos expertises" className="flex flex-col gap-1">
+        <span className="pb-1.5 font-extrabold text-white">Expertises</span>
+        {SERVICES.slice(0, 4).map((s) => (
+          <Link key={s.id} to={`/expertises#${s.id}`} className="py-1.5 text-mist-4 no-underline hover:text-white">
+            {s.short}
+          </Link>
+        ))}
+      </nav>
+      <address className="flex flex-col gap-2.5 not-italic">
+        <span className="pb-0.5 font-extrabold text-white">Nous joindre</span>
+        <a href={SITE.phoneHref} className="text-mist-4 no-underline hover:text-white">{SITE.phone}</a>
+        <a href={`mailto:${SITE.email}`} className="break-all text-mist-4 no-underline hover:text-white">{SITE.email}</a>
+        <span>{SITE.address.full}</span>
+      </address>
     </div>
-    <p className="text-center text-gray-500 text-xs mt-10 italic">
-      CCC for N.G.E Consulting ©2026.
-    </p>
+    <div className="mx-auto mt-12 flex max-w-site flex-wrap justify-between gap-x-8 gap-y-3 border-t border-navy-line pt-6 text-sm">
+      <span>© {new Date().getFullYear()} {SITE.name}</span>
+      {/* [À créer] : pages Mentions légales, Politique de confidentialité et Cookies. */}
+      <span>Libreville, Gabon</span>
+    </div>
   </footer>
-); 
+);

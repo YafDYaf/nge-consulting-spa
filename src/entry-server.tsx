@@ -1,0 +1,21 @@
+/* eslint-disable react-refresh/only-export-components -- module serveur, jamais rechargé à chaud */
+// Point d'entrée du prérendu (exécuté au build par scripts/prerender.mjs, jamais dans le navigateur).
+import { StrictMode } from 'react';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
+import App from './App';
+import { headTags, metaFor, ROUTES } from './seo';
+import { SITE_URL } from './site';
+
+export { ROUTES, SITE_URL };
+
+export function render(url: string) {
+  const html = renderToString(
+    <StrictMode>
+      <StaticRouter location={url}>
+        <App />
+      </StaticRouter>
+    </StrictMode>,
+  );
+  return { html, head: headTags(metaFor(url)) };
+}

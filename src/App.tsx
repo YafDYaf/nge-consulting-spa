@@ -1,23 +1,26 @@
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
-import { Hero } from './sections/Hero';
-import { Missions } from './sections/Missions';
-import { About } from './sections/About';
-import { Contact } from './sections/Contact'; // <--- Import du nouveau composant
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import Home from './pages/Home';
+import Expertises from './pages/Expertises';
+import Cabinet from './pages/Cabinet';
+import Besoins from './pages/Besoins';
+import Ressources from './pages/Ressources';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
+// Les routes doivent rester alignées avec PAGES dans src/seo.ts (prérendu, sitemap, balises).
 export default function App() {
   return (
-    <div className="min-h-screen bg-brand-light">
-      <Navbar />
-      
-      <main>
-        <Hero />
-        <Missions />
-        <About />
-        <Contact /> {/* <--- Utilisation du composant */}
-      </main>
-
-      <Footer />
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="expertises" element={<Expertises />} />
+        <Route path="cabinet" element={<Cabinet />} />
+        <Route path="vos-besoins" element={<Besoins />} />
+        <Route path="ressources" element={<Ressources />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }

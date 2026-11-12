@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+import { createRoot, hydrateRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import '@fontsource-variable/figtree';
+import './index.css';
+import App from './App.tsx';
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!;
+const app = (
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
+);
+
+// En production, chaque page est prérendue en HTML (voir scripts/prerender.mjs) : on l'hydrate.
+// En développement, la racine est vide : rendu client classique.
+if (container.firstElementChild) hydrateRoot(container, app);
+else createRoot(container).render(app);
