@@ -39,7 +39,12 @@ export const Footer = () => (
     <div className="mx-auto mt-12 flex max-w-site flex-wrap justify-between gap-x-8 gap-y-3 border-t border-navy-line pt-6 text-sm">
       <span>© {new Date().getFullYear()} {SITE.name}</span>
       {/* [À créer] : pages Mentions légales, Politique de confidentialité et Cookies. */}
-      <span>Libreville, Gabon</span>
+      <span>
+        Site réalisé par{' '}
+        <a href="https://ccc-gabon.com" target="_blank" rel="noopener" className="font-semibold text-white underline decoration-sky decoration-2 underline-offset-4 hover:text-sun">
+          clean_clever_code
+        </a>
+      </span>
     </div>
   </footer>
 );
