@@ -1,30 +1,39 @@
 import { useState } from 'react';
-import { Check, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { ArrowButton, Pill, PhotoPlaceholder, SplitTitle } from '../components/ui';
-import { inputCls, labelCls } from '../components/form-styles';
+import { ArrowButton, SplitTitle } from '../components/ui';
+import { RevealWords } from '../components/effects';
 import { useRdv } from '../components/rdv-context';
 import { SITE } from '../site';
 
+const X = 'px-[clamp(20px,5vw,72px)]';
+const wrap = 'mx-auto max-w-site';
 const SITUATIONS = ['J’ai une entreprise', 'Je crée mon entreprise', 'Autre situation'];
 const CHANNELS = [
   { label: 'Par téléphone', field: 'Votre numéro de téléphone', type: 'tel', ph: '+241', phrase: 'par téléphone' },
   { label: 'Par e-mail', field: 'Votre adresse e-mail', type: 'email', ph: 'nom@entreprise.ga', phrase: 'par e-mail' },
   { label: 'Par WhatsApp', field: 'Votre numéro WhatsApp', type: 'tel', ph: '+241', phrase: 'sur WhatsApp' },
 ];
+const fieldLabel = 'flex flex-col gap-2 text-sm font-bold uppercase tracking-[0.16em] text-ink-muted';
+const field = 'line-input normal-case tracking-normal text-navy';
 
-function Row({ icon, label, children, href, last }: { icon: ReactNode; label: string; children: ReactNode; href?: string; last?: boolean }) {
-  const body = (
-    <>
-      <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-full bg-navy-800 text-sun">{icon}</span>
-      <span className="flex min-w-0 flex-col">
-        <span className="text-sm text-mist-2">{label}</span>
-        <span className="break-words text-lg font-extrabold">{children}</span>
-      </span>
-    </>
+function Choice({ items, value, onChange, label }: { items: string[]; value: number; onChange: (i: number) => void; label: string }) {
+  return (
+    <div role="group" aria-label={label} className="flex flex-col gap-3">
+      <span className="text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">{label}</span>
+      <div className="flex flex-wrap gap-x-6 gap-y-2">
+        {items.map((l, i) => (
+          <button
+            key={l}
+            type="button"
+            aria-pressed={i === value}
+            onClick={() => onChange(i)}
+            className={`sweep-link min-h-11 border-0 bg-transparent p-0 text-lg font-bold transition-colors ${i === value ? 'text-navy' : 'text-ink-muted hover:text-navy'}`}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+    </div>
   );
-  const cls = `flex items-center gap-4 py-[18px] text-white no-underline ${last ? '' : 'border-b border-navy-line'}`;
-  return href ? <a href={href} className={cls}>{body}</a> : <div className={cls}>{body}</div>;
 }
 
 export default function Contact() {
@@ -38,106 +47,96 @@ export default function Contact() {
 
   return (
     <>
-      <section className="bg-navy px-[clamp(20px,5vw,72px)] pb-[clamp(120px,14vw,180px)] pt-[clamp(48px,7vw,88px)]">
-        <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] items-end gap-x-16 gap-y-6">
-          <SplitTitle strong="Parlons de" light="votre besoin." className="text-[clamp(44px,6vw,84px)]" />
-          <p className="fade-d1 m-0 max-w-[460px] text-lg text-mist">
-            Écrivez-nous, appelez-nous ou réservez directement un créneau. Un conseiller vous répond sous un jour ouvré.
-          </p>
+      <section className={`${X} pb-[clamp(56px,8vw,104px)] pt-[clamp(56px,8vw,112px)]`}>
+        <div className={`${wrap} flex flex-col gap-[clamp(40px,6vw,80px)]`}>
+          <div className="grid items-end gap-x-16 gap-y-6 lg:grid-cols-[1.2fr_1fr]">
+            <SplitTitle strong="Parlons de" light="votre besoin." className="text-[clamp(52px,8vw,124px)] leading-[0.92]" />
+            <p className="fade-d1 m-0 max-w-[460px] text-lg text-mist">
+              Écrivez-nous, appelez-nous ou réservez directement un créneau. Un conseiller vous répond sous un jour ouvré.
+            </p>
+          </div>
+          {/* Coordonnées en très grand : le numéro est l'appel à l'action principal. */}
+          <address className="fade-d2 flex flex-col border-t border-navy-line not-italic">
+            <a href={SITE.phoneHref} className="group flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-navy-line py-6 text-white no-underline">
+              <span className="text-sm font-bold uppercase tracking-[0.2em] text-sky">Téléphone</span>
+              <span className="text-[clamp(34px,5.6vw,84px)] font-heavy leading-none tracking-tightest transition-colors duration-500 group-hover:text-sun">{SITE.phone}</span>
+            </a>
+            <a href={`mailto:${SITE.email}`} className="group flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-navy-line py-6 text-white no-underline">
+              <span className="text-sm font-bold uppercase tracking-[0.2em] text-sky">E-mail</span>
+              <span className="break-all text-[clamp(22px,3.2vw,48px)] font-extrabold leading-none tracking-[-0.03em] transition-colors duration-500 group-hover:text-sun">{SITE.email}</span>
+            </a>
+            <div className="grid gap-x-10 gap-y-4 py-6 text-lg md:grid-cols-3">
+              <span className="flex flex-col"><span className="text-sm font-bold uppercase tracking-[0.2em] text-sky">Bureaux</span>{SITE.address.full}</span>
+              <span className="flex flex-col"><span className="text-sm font-bold uppercase tracking-[0.2em] text-sky">WhatsApp</span>[Numéro WhatsApp professionnel]</span>
+              <span className="flex flex-col"><span className="text-sm font-bold uppercase tracking-[0.2em] text-sky">Horaires</span>[Du lundi au vendredi, horaires à confirmer]</span>
+            </div>
+          </address>
         </div>
       </section>
 
-      <section className="bg-white px-[clamp(16px,3vw,40px)] pb-[clamp(56px,8vw,104px)] text-navy">
-        <div className="relative mx-auto -mt-[clamp(80px,10vw,140px)] grid max-w-wide grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] items-start gap-4">
-          <div className="rounded-panel bg-white p-[clamp(22px,3.4vw,40px)] shadow-[0_30px_70px_rgba(4,14,28,0.18)]">
-            {sent ? (
-              <div className="flex flex-col items-start gap-3.5 py-4">
-                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-sun">
-                  <Check aria-hidden="true" size={30} strokeWidth={2.4} />
-                </span>
-                <h2 className="m-0 text-[clamp(26px,2.6vw,34px)] font-extrabold leading-[1.05] tracking-[-0.025em]">
-                  Demande envoyée{firstName ? `, ${firstName}` : ''}
-                </h2>
-                <p className="m-0 max-w-[460px] text-[17px] text-ink">Un conseiller vous recontacte {cfg.phrase} sous un jour ouvré.</p>
-                <button type="button" onClick={() => { setSent(false); setName(''); }} className="min-h-11 border-0 bg-transparent p-0 text-[15px] font-bold text-royal underline underline-offset-4">
-                  Envoyer une autre demande
-                </button>
-              </div>
-            ) : (
-              <form
-                className="flex flex-col gap-[22px]"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  // [À brancher] : envoi réel (Formspree, Resend, API du cabinet…).
-                  setSent(true);
-                }}
-              >
-                <h2 className="m-0 text-[clamp(26px,2.6vw,34px)] font-extrabold leading-[1.05] tracking-[-0.025em]">Votre demande</h2>
-                <div role="group" aria-label="Votre situation" className="flex flex-col gap-2.5">
-                  <span className="text-[15px] font-extrabold">Votre situation</span>
-                  <div className="flex flex-wrap gap-2">
-                    {SITUATIONS.map((l, i) => <Pill key={l} pressed={i === sit} onClick={() => setSit(i)}>{l}</Pill>)}
-                  </div>
-                </div>
-                <label className={labelCls}>
-                  Votre besoin principal
-                  <select className={inputCls}>
-                    <option>Comptabilité</option>
-                    <option>Fiscalité et déclarations</option>
-                    <option>Paie et gestion sociale</option>
-                    <option>Création d’entreprise</option>
-                    <option>Conseil et pilotage</option>
-                    <option>Demande de devis</option>
-                    <option>Autre demande</option>
-                  </select>
-                </label>
-                <label className={labelCls}>
-                  Votre nom ou votre entreprise
-                  <input required type="text" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className={inputCls} />
-                </label>
-                <div role="group" aria-label="Comment préférez-vous être contacté ?" className="flex flex-col gap-2.5">
-                  <span className="text-[15px] font-extrabold">Comment préférez-vous être contacté ?</span>
-                  <div className="flex flex-wrap gap-2">
-                    {CHANNELS.map((c, i) => <Pill key={c.label} pressed={i === ch} onClick={() => setCh(i)}>{c.label}</Pill>)}
-                  </div>
-                </div>
-                <label className={labelCls}>
-                  {cfg.field}
-                  <input required key={cfg.type} type={cfg.type} placeholder={cfg.ph} className={inputCls} />
-                </label>
-                <label className={labelCls}>
-                  Quelques précisions (facultatif)
-                  <textarea rows={4} placeholder="Votre activité, votre nombre de salariés, l’échéance qui vous préoccupe…" className={`${inputCls} resize-y py-3`} />
-                </label>
-                <label className="flex items-start gap-2.5 text-[13px] text-ink">
-                  <input required type="checkbox" className="mt-px h-5 w-5 flex-none accent-navy" />
-                  J’accepte que N.G.E Consulting utilise ces informations pour répondre à ma demande.
-                </label>
-                <button type="submit" className="min-h-[58px] rounded-full border-0 bg-navy text-base font-bold text-white">Envoyer ma demande</button>
-              </form>
-            )}
+      <section className={`bg-sun ${X} py-[clamp(56px,8vw,104px)] text-navy`}>
+        <div className={`${wrap} flex flex-wrap items-end justify-between gap-8`}>
+          <RevealWords text="Vous préférez choisir votre créneau ?" className="m-0 max-w-[760px] text-[clamp(34px,4.6vw,68px)] font-heavy leading-[0.98] tracking-tightest" />
+          <div className="flex flex-col items-start gap-4">
+            <p className="m-0 max-w-[400px] text-[17px]">Réservez un premier échange de trente minutes, au cabinet, en visioconférence ou par téléphone.</p>
+            <ArrowButton tone="navy" onClick={openRdv}>Prendre rendez-vous</ArrowButton>
           </div>
+        </div>
+      </section>
 
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3.5 rounded-panel bg-sun p-[clamp(22px,3.4vw,36px)]">
-              <h2 className="m-0 text-[clamp(24px,2.4vw,30px)] font-extrabold leading-[1.1] tracking-[-0.02em]">Vous préférez choisir votre créneau ?</h2>
-              <p className="m-0 text-base">Réservez un premier échange de trente minutes, au cabinet, en visioconférence ou par téléphone.</p>
-              <ArrowButton tone="navy" size="md" onClick={openRdv} className="self-start">Prendre rendez-vous</ArrowButton>
+      <section className={`bg-white ${X} py-[clamp(72px,10vw,144px)] text-navy`}>
+        <div className={`${wrap} grid items-start gap-[clamp(40px,6vw,96px)] lg:grid-cols-[1fr_1.3fr]`}>
+          <RevealWords text="Ou écrivez-nous directement." className="m-0 text-[clamp(34px,4.2vw,62px)] font-extrabold leading-none tracking-tighter2 lg:sticky lg:top-28" />
+          {sent ? (
+            <div className="flex flex-col items-start gap-4 border-t-2 border-navy pt-8">
+              <span className="text-[clamp(32px,3.4vw,48px)] font-heavy leading-none tracking-tightest">Demande envoyée{firstName ? `, ${firstName}` : ''}.</span>
+              <span className="text-lg text-ink">Un conseiller vous recontacte {cfg.phrase} sous un jour ouvré.</span>
+              <button type="button" onClick={() => { setSent(false); setName(''); }} className="sweep-link min-h-11 border-0 bg-transparent p-0 text-base font-bold text-royal">
+                Envoyer une autre demande
+              </button>
             </div>
-            <address className="flex flex-col rounded-panel bg-navy px-[clamp(22px,3vw,32px)] py-2 not-italic text-white">
-              <Row icon={<Phone aria-hidden="true" size={20} />} label="Téléphone" href={SITE.phoneHref}>{SITE.phone}</Row>
-              <Row icon={<Mail aria-hidden="true" size={20} />} label="E-mail" href={`mailto:${SITE.email}`}>{SITE.email}</Row>
-              <Row icon={<MessageCircle aria-hidden="true" size={20} />} label="WhatsApp">[Numéro WhatsApp professionnel]</Row>
-              <Row icon={<MapPin aria-hidden="true" size={20} />} label="Bureaux">{SITE.address.full}</Row>
-              <Row icon={<Clock aria-hidden="true" size={20} />} label="Horaires" last>[Du lundi au vendredi, horaires à confirmer]</Row>
-            </address>
-            {/* [À intégrer] : carte (Google Maps ou OpenStreetMap) une fois l'adresse exacte confirmée. */}
-            <PhotoPlaceholder
-              title="Carte du quartier Nombakélé"
-              note="À intégrer une fois l’adresse exacte du cabinet confirmée."
-              className="min-h-[220px] rounded-panel bg-ice text-ink"
-            />
-          </div>
+          ) : (
+            <form
+              className="flex flex-col gap-9 border-t-2 border-navy pt-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                // [À brancher] : envoi réel (Formspree, Resend, API du cabinet…).
+                setSent(true);
+              }}
+            >
+              <Choice label="Votre situation" items={SITUATIONS} value={sit} onChange={setSit} />
+              <label className={fieldLabel}>
+                Votre besoin principal
+                <select className={field}>
+                  <option>Comptabilité</option>
+                  <option>Fiscalité et déclarations</option>
+                  <option>Paie et gestion sociale</option>
+                  <option>Création d’entreprise</option>
+                  <option>Conseil et pilotage</option>
+                  <option>Demande de devis</option>
+                  <option>Autre demande</option>
+                </select>
+              </label>
+              <label className={fieldLabel}>
+                Votre nom ou votre entreprise
+                <input required type="text" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className={field} />
+              </label>
+              <Choice label="Comment préférez-vous être contacté ?" items={CHANNELS.map((c) => c.label)} value={ch} onChange={setCh} />
+              <label className={fieldLabel}>
+                {cfg.field}
+                <input required key={cfg.type} type={cfg.type} placeholder={cfg.ph} className={field} />
+              </label>
+              <label className={fieldLabel}>
+                Quelques précisions (facultatif)
+                <textarea rows={3} placeholder="Votre activité, votre nombre de salariés, l’échéance qui vous préoccupe…" className={`${field} resize-y py-2`} />
+              </label>
+              <label className="flex items-start gap-3 text-[14px] text-ink">
+                <input required type="checkbox" className="mt-0.5 h-5 w-5 flex-none accent-navy" />
+                J’accepte que N.G.E Consulting utilise ces informations pour répondre à ma demande.
+              </label>
+              <ArrowButton type="submit" tone="navy" className="self-start">Envoyer ma demande</ArrowButton>
+            </form>
+          )}
         </div>
       </section>
     </>

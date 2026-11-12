@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Download, FileText, Search } from 'lucide-react';
-import { ArrowButton, Pill, SplitTitle } from '../components/ui';
+import { Search } from 'lucide-react';
+import { ArrowButton, SplitTitle } from '../components/ui';
+import { ParallaxBand, RevealWords } from '../components/effects';
 import { useRdv } from '../components/rdv-context';
-import { ARTICLE_CATS, ARTICLE_TONES, ARTICLES, GUIDES } from '../data/content';
+import { ARTICLE_CATS, ARTICLES, GUIDES } from '../data/content';
 import featured from '../assets/photos/libreville-commerce.webp';
 
 const X = 'px-[clamp(20px,5vw,72px)]';
+const wrap = 'mx-auto max-w-site';
 
 export default function Ressources() {
   const { openRdv } = useRdv();
@@ -18,123 +20,102 @@ export default function Ressources() {
 
   return (
     <>
-      <section className={`bg-navy ${X} pb-[clamp(40px,5vw,64px)] pt-[clamp(48px,7vw,88px)]`}>
-        <div className="mx-auto flex max-w-site flex-col gap-[clamp(24px,3vw,36px)]">
-          <SplitTitle strong="Comprendre vos obligations" light="pour mieux gérer votre entreprise." className="max-w-[980px] text-[clamp(40px,5.4vw,76px)]" />
-          <label className="fade-d1 flex min-h-[60px] max-w-[620px] items-center gap-3 rounded-full bg-white pl-5 pr-2 text-navy">
-            <Search aria-hidden="true" size={20} strokeWidth={2.2} />
+      <section className={`${X} pb-[clamp(48px,6vw,80px)] pt-[clamp(56px,8vw,112px)]`}>
+        <div className={`${wrap} flex flex-col gap-[clamp(28px,4vw,48px)]`}>
+          <SplitTitle strong="Comprendre vos obligations" light="pour mieux gérer votre entreprise." className="max-w-[1100px] text-[clamp(42px,6vw,92px)] leading-[0.94]" />
+          <label className="fade-d1 flex max-w-[720px] items-center gap-4 border-b-2 border-mist-3 pb-2 focus-within:border-sun">
+            <Search aria-hidden="true" size={28} strokeWidth={2} className="flex-none text-mist-3" />
             <span className="sr-only">Rechercher un article</span>
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Rechercher : TVA, CNSS, statuts, bilan…"
-              className="min-h-14 min-w-0 flex-auto border-0 bg-transparent text-[17px] text-navy outline-offset-[-3px]"
+              placeholder="TVA, CNSS, statuts, bilan…"
+              className="min-h-14 min-w-0 flex-auto border-0 bg-transparent text-[clamp(22px,2.4vw,32px)] font-semibold text-white outline-none placeholder:text-mist-3/60"
             />
           </label>
-          <div role="group" aria-label="Filtrer par thème" className="fade-d2 flex flex-wrap gap-2">
+          <div role="group" aria-label="Filtrer par thème" className="fade-d2 flex flex-wrap gap-x-7 gap-y-2">
             {ARTICLE_CATS.map((c, i) => (
-              <Pill key={c} variant="dark" pressed={i === cat} onClick={() => setCat(i)}>{c}</Pill>
+              <button
+                key={c}
+                type="button"
+                aria-pressed={i === cat}
+                onClick={() => setCat(i)}
+                className={`sweep-link min-h-11 border-0 bg-transparent p-0 text-base font-bold transition-colors ${i === cat ? 'text-sun' : 'text-mist hover:text-white'}`}
+              >
+                {c}
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      <div className="bg-white text-navy">
-        <section className={`${X} pt-[clamp(40px,6vw,72px)]`}>
-          <article className="lift mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] overflow-hidden rounded-panel bg-sun">
-            <img
-              src={featured}
-              alt="Clients en caisse dans un supermarché de Libreville, drapeaux du Gabon au premier plan"
-              loading="lazy"
-              decoding="async"
-              width={1400}
-              height={933}
-              className="h-full min-h-[clamp(220px,28vw,380px)] w-full object-cover"
-            />
-            <div className="flex flex-col gap-4 p-[clamp(24px,4vw,48px)]">
-              <span className="text-[15px] font-bold">À la une, fiscalité</span>
-              <h2 className="m-0 text-[clamp(28px,3.2vw,42px)] font-extrabold leading-[1.08] tracking-[-0.03em]">
-                Facture électronique : ce que la loi de finances 2026 change pour votre entreprise.
-              </h2>
-              <p className="m-0 text-[17px]">
-                Qui est concerné, ce qu’est une facture normalisée, et pourquoi elle conditionne la déduction de vos charges et la récupération de la TVA.
-              </p>
-              <span className="mt-auto text-sm">[Date de publication] — [Auteur]</span>
-            </div>
-          </article>
-        </section>
+      <ParallaxBand src={featured} alt="Clients en caisse dans un supermarché de Libreville, drapeaux du Gabon au premier plan" veil="bg-gradient-to-t from-navy via-navy/80 to-navy/20" className={`${X} pb-[clamp(56px,8vw,96px)] pt-[clamp(140px,20vw,280px)]`}>
+        <article className={`${wrap} flex flex-col gap-5`}>
+          <span className="text-sm font-bold uppercase tracking-[0.2em] text-sun">À la une · Fiscalité</span>
+          <RevealWords text="Facture électronique : ce que la loi de finances 2026 change pour votre entreprise." className="m-0 max-w-[1000px] text-[clamp(32px,4.4vw,66px)] font-heavy leading-[1] tracking-tightest" />
+          <p className="m-0 max-w-[640px] text-lg text-mist">
+            Qui est concerné, ce qu’est une facture normalisée, et pourquoi elle conditionne la déduction de vos charges et la récupération de la TVA.
+          </p>
+          <span className="text-sm text-mist-3">[Date de publication] — [Auteur]</span>
+        </article>
+      </ParallaxBand>
 
-        <section className={`${X} pb-[clamp(56px,8vw,104px)] pt-[clamp(40px,6vw,72px)]`}>
-          <div className="mx-auto flex max-w-site flex-col gap-6">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-              <h2 className="m-0 text-[clamp(28px,3vw,40px)] font-extrabold leading-[1.05] tracking-[-0.03em]">{cat === 0 ? 'Tous les articles' : ARTICLE_CATS[cat]}</h2>
-              <span className="text-[15px] text-ink-muted" aria-live="polite">{list.length} {list.length > 1 ? 'articles' : 'article'}</span>
-            </div>
-            {list.length > 0 ? (
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))] gap-5">
-                {list.map((a) => (
-                  <article key={a.title} className="lift flex flex-col overflow-hidden rounded-card border border-[#E1E9F1] bg-ice-pale">
-                    <div className="box-border flex h-[168px] items-end p-4" style={{ background: ARTICLE_TONES[a.cat] }}>
-                      <span className="inline-flex min-h-[30px] items-center rounded-full bg-white px-3 text-[13px] font-bold">{a.cat}</span>
-                    </div>
-                    <div className="flex flex-auto flex-col gap-2.5 p-[22px]">
-                      <h3 className="m-0 text-xl font-extrabold leading-[1.25] tracking-[-0.015em]">{a.title}</h3>
-                      <p className="m-0 text-[15px] text-ink">{a.summary}</p>
-                      <span className="mt-auto pt-2 text-[13px] text-ink-muted">[Date] — [Auteur]</span>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-start gap-3 rounded-card bg-ice-pale p-8">
-                <span className="text-xl font-extrabold">Aucun article ne correspond à votre recherche.</span>
-                <span className="text-base text-ink">Essayez un autre mot ou un autre thème, ou posez directement votre question à un conseiller.</span>
-                <button type="button" onClick={() => { setCat(0); setQuery(''); }} className="min-h-12 rounded-full border-0 bg-navy px-[22px] text-[15px] font-bold text-white">
-                  Afficher tous les articles
-                </button>
-              </div>
-            )}
-            <p className="m-0 text-[13px] text-ink-muted">Sujets proposés pour le lancement. Chaque article sera rédigé, daté et vérifié au regard des textes en vigueur avant publication.</p>
+      <section className={`bg-white ${X} py-[clamp(64px,9vw,128px)] text-navy`}>
+        <div className={`${wrap} flex flex-col gap-8`}>
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <h2 className="m-0 text-[clamp(30px,3.4vw,48px)] font-extrabold leading-none tracking-tighter2">{cat === 0 ? 'Tous les articles' : ARTICLE_CATS[cat]}</h2>
+            <span className="text-[15px] tabular-nums text-ink-muted" aria-live="polite">{list.length} {list.length > 1 ? 'articles' : 'article'}</span>
           </div>
-        </section>
-
-        <section className={`bg-ice ${X} py-[clamp(56px,8vw,104px)]`}>
-          <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(360px,100%),1fr))] items-start gap-[clamp(28px,4vw,56px)]">
-            <div className="flex flex-col gap-4">
-              <h2 className="m-0 text-[clamp(32px,3.8vw,52px)] font-extrabold leading-[1.02] tracking-tighter2">Des guides à garder sous la main.</h2>
-              <p className="m-0 max-w-[440px] text-[17px] text-ink">Des fiches pratiques à télécharger, pour préparer vos échéances et vos rendez-vous.</p>
-            </div>
-            <ul className="m-0 flex list-none flex-col gap-3 p-0">
-              {GUIDES.map((g) => (
-                <li key={g.title} className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 rounded-[22px] bg-white px-[22px] py-5">
-                  <div className="flex flex-[1_1_300px] items-center gap-4">
-                    <span className="flex h-12 w-12 flex-none items-center justify-center rounded-[14px] bg-navy text-sun">
-                      <FileText aria-hidden="true" size={22} />
-                    </span>
-                    <span className="flex flex-col">
-                      <span className="text-[17px] font-extrabold">{g.title}</span>
-                      <span className="text-sm text-ink-muted">{g.meta}</span>
-                    </span>
-                  </div>
-                  {/* [À fournir] : fichier PDF. Bouton inactif tant que le guide n’existe pas. */}
-                  <button type="button" disabled title="Guide en préparation" className="inline-flex min-h-[46px] items-center gap-2 rounded-full border-[1.5px] border-navy bg-transparent px-[18px] text-[15px] font-bold text-navy disabled:opacity-60">
-                    <Download aria-hidden="true" size={16} strokeWidth={2.2} />
-                    Bientôt disponible
-                  </button>
+          {list.length > 0 ? (
+            <ol className="m-0 list-none border-t-2 border-navy p-0">
+              {list.map((a) => (
+                <li key={a.title} className="group grid gap-x-10 gap-y-2 border-b border-[#D5DEE8] py-7 transition-[padding] duration-500 ease-out hover:pl-3 md:grid-cols-[160px_1.3fr_1fr]">
+                  <span className="text-sm font-bold uppercase tracking-[0.14em] text-royal">{a.cat}</span>
+                  <h3 className="m-0 text-[clamp(22px,2.2vw,30px)] font-extrabold leading-[1.15] tracking-[-0.02em] group-hover:underline group-hover:decoration-sky group-hover:decoration-2 group-hover:underline-offset-[6px]">{a.title}</h3>
+                  <p className="m-0 text-base text-ink">
+                    {a.summary} <span className="block pt-2 text-[13px] text-ink-muted">[Date] — [Auteur]</span>
+                  </p>
                 </li>
               ))}
-            </ul>
-          </div>
-        </section>
+            </ol>
+          ) : (
+            <div className="flex flex-col items-start gap-3 border-t-2 border-navy pt-8">
+              <span className="text-[clamp(24px,2.4vw,34px)] font-extrabold">Aucun article ne correspond à votre recherche.</span>
+              <span className="text-lg text-ink">Essayez un autre mot ou un autre thème, ou posez directement votre question à un conseiller.</span>
+              <button type="button" onClick={() => { setCat(0); setQuery(''); }} className="sweep-link min-h-11 border-0 bg-transparent p-0 text-base font-bold text-navy">
+                Afficher tous les articles
+              </button>
+            </div>
+          )}
+          <p className="m-0 text-[13px] text-ink-muted">Sujets proposés pour le lancement. Chaque article sera rédigé, daté et vérifié au regard des textes en vigueur avant publication.</p>
+        </div>
+      </section>
 
-        <section className="px-[clamp(16px,3vw,40px)] py-[clamp(40px,6vw,72px)]">
-          <div className="mx-auto box-border flex max-w-wide flex-wrap items-center justify-between gap-x-10 gap-y-5 rounded-panel bg-navy p-[clamp(28px,5vw,56px)] text-white">
-            <span className="flex-[1_1_420px] text-[clamp(24px,2.8vw,36px)] font-extrabold leading-[1.1] tracking-[-0.025em]">Une question sur votre situation ? Un conseiller vous répond.</span>
-            <ArrowButton onClick={openRdv}>Prendre rendez-vous</ArrowButton>
+      <section className={`bg-ice ${X} py-[clamp(64px,9vw,128px)] text-navy`}>
+        <div className={`${wrap} grid items-start gap-[clamp(32px,5vw,72px)] lg:grid-cols-[1fr_1.3fr]`}>
+          <div className="flex flex-col gap-4">
+            <RevealWords text="Des guides à garder sous la main." className="m-0 text-[clamp(34px,4.2vw,62px)] font-extrabold leading-none tracking-tighter2" />
+            <p className="m-0 max-w-[440px] text-[17px] text-ink">Des fiches pratiques à télécharger, pour préparer vos échéances et vos rendez-vous.</p>
           </div>
-        </section>
-      </div>
+          <ul className="m-0 list-none border-t-2 border-navy p-0">
+            {GUIDES.map((g) => (
+              <li key={g.title} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-[#BFD3E3] py-6">
+                <span className="text-[clamp(20px,2vw,26px)] font-extrabold tracking-[-0.015em]">{g.title}</span>
+                {/* [À fournir] : fichier PDF. */}
+                <span className="text-sm text-ink-muted">{g.meta} · bientôt disponible</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className={`bg-sun ${X} py-[clamp(64px,9vw,128px)] text-navy`}>
+        <div className={`${wrap} flex flex-col items-start gap-8`}>
+          <RevealWords text="Une question sur votre situation ? Un conseiller vous répond." className="m-0 max-w-[1000px] text-[clamp(36px,5vw,76px)] font-heavy leading-[0.98] tracking-tightest" />
+          <ArrowButton tone="navy" onClick={openRdv}>Prendre rendez-vous</ArrowButton>
+        </div>
+      </section>
     </>
   );
 }

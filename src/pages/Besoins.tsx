@@ -1,13 +1,35 @@
 import { useState } from 'react';
-import { Check } from 'lucide-react';
-import { ArrowButton, CheckItem, Pill, SplitTitle } from '../components/ui';
-import { inputCls, labelCls } from '../components/form-styles';
+import { ArrowButton, SplitTitle } from '../components/ui';
+import { ParallaxBand, RevealWords } from '../components/effects';
 import { useRdv } from '../components/rdv-context';
 import { ADVICE_BY_NEED, PROFILES } from '../data/content';
 
+const X = 'px-[clamp(20px,5vw,72px)]';
+const wrap = 'mx-auto max-w-site';
 const PROFILE_PILLS = ['Créateur ou porteur de projet', 'TPE', 'PME'];
 const NEED_PILLS = ['Comptabilité', 'Fiscalité', 'Paie', 'Création', 'Pilotage'];
 const PREFIX = ['Pour un projet en création : ', 'Pour une TPE : ', 'Pour une PME : '];
+
+function Choice({ items, value, onChange, label }: { items: string[]; value: number; onChange: (i: number) => void; label: string }) {
+  return (
+    <div role="group" aria-label={label} className="flex flex-col gap-3">
+      <span className="text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">{label}</span>
+      <div className="flex flex-wrap gap-x-6 gap-y-2">
+        {items.map((l, i) => (
+          <button
+            key={l}
+            type="button"
+            aria-pressed={i === value}
+            onClick={() => onChange(i)}
+            className={`sweep-link min-h-11 border-0 bg-transparent p-0 text-lg font-bold transition-colors ${i === value ? 'text-navy' : 'text-ink-muted hover:text-navy'}`}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Besoins() {
   const { openRdv } = useRdv();
@@ -18,106 +40,100 @@ export default function Besoins() {
 
   return (
     <>
-      <section className="bg-navy px-[clamp(20px,5vw,72px)] pb-[clamp(48px,6vw,80px)] pt-[clamp(48px,7vw,88px)]">
-        <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] items-end gap-x-16 gap-y-6">
-          <SplitTitle strong="Partez de votre situation," light="pas de notre jargon." className="text-[clamp(42px,5.6vw,80px)]" />
+      <section className={`${X} pb-[clamp(56px,8vw,104px)] pt-[clamp(56px,8vw,112px)]`}>
+        <div className={`${wrap} grid items-end gap-x-16 gap-y-6 lg:grid-cols-[1.4fr_1fr]`}>
+          <SplitTitle strong="Partez de votre situation," light="pas de notre jargon." className="text-[clamp(44px,6.4vw,96px)] leading-[0.94]" />
           <p className="fade-d1 m-0 max-w-[480px] text-lg text-mist">
             Vous n’avez pas besoin de savoir quel service demander. Dites-nous où en est votre entreprise, nous vous orientons.
           </p>
         </div>
       </section>
 
-      <section className="flex flex-col gap-4 bg-white px-[clamp(16px,3vw,40px)] pt-[clamp(40px,6vw,80px)] text-navy">
-        {PROFILES.map((p) => (
-          <article
-            key={p.title}
-            className="mx-auto box-border grid w-full max-w-wide grid-cols-[repeat(auto-fit,minmax(min(380px,100%),1fr))] items-stretch gap-[clamp(24px,4vw,48px)] rounded-panel p-[clamp(20px,3vw,32px)]"
-            style={{ background: p.bg }}
-          >
-            <img src={p.photo} alt={p.photoAlt} loading="lazy" decoding="async" width={1200} height={800} className="h-full min-h-[clamp(220px,26vw,340px)] w-full rounded-3xl object-cover" />
-            <div className="flex flex-col gap-4 px-[clamp(0px,1vw,16px)] py-[clamp(4px,1vw,16px)]">
-              <h2 className="m-0 text-[clamp(30px,3.4vw,46px)] font-extrabold leading-[1.02] tracking-tighter2">{p.title}</h2>
-              <p className="m-0 text-[clamp(18px,1.6vw,21px)] font-semibold leading-[1.4]">{p.question}</p>
-              <p className="m-0 text-base opacity-90">{p.text}</p>
-              <ul className="m-0 flex list-none flex-col gap-2 p-0">
-                {p.items.map((it) => <CheckItem key={it} color="text-navy">{it}</CheckItem>)}
+      {PROFILES.map((p, i) => (
+        <ParallaxBand
+          key={p.title}
+          src={p.photo}
+          alt={p.photoAlt}
+          veil={i % 2 ? 'bg-gradient-to-l from-navy/95 via-navy/80 to-navy/30' : 'bg-gradient-to-r from-navy/95 via-navy/80 to-navy/30'}
+          className={`${X} py-[clamp(88px,12vw,176px)]`}
+        >
+          <div className={`${wrap} flex ${i % 2 ? 'justify-end' : ''}`}>
+            <article className="flex max-w-[680px] flex-col gap-5">
+              <span className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: p.bg === '#E4F1F8' ? '#7FD6FA' : p.bg }}>
+                Profil {String(i + 1).padStart(2, '0')}
+              </span>
+              <RevealWords text={p.title} className="m-0 text-[clamp(40px,5.4vw,80px)] font-heavy leading-[0.95] tracking-tightest" />
+              <p className="m-0 text-[clamp(20px,1.9vw,26px)] font-semibold leading-[1.3]">{p.question}</p>
+              <p className="m-0 text-[17px] text-mist">{p.text}</p>
+              <ul className="m-0 flex list-none flex-col gap-1.5 p-0 text-[17px]">
+                {p.items.map((it) => (
+                  <li key={it} className="flex gap-3">
+                    <span aria-hidden="true" className="text-sun">—</span>
+                    {it}
+                  </li>
+                ))}
               </ul>
-              <ArrowButton tone="navy" size="md" onClick={openRdv} className="mt-auto self-start">{p.cta}</ArrowButton>
-            </div>
-          </article>
-        ))}
-      </section>
+              <ArrowButton size="md" onClick={openRdv} className="mt-3 self-start">{p.cta}</ArrowButton>
+            </article>
+          </div>
+        </ParallaxBand>
+      ))}
 
-      <section className="bg-white px-[clamp(20px,5vw,72px)] py-[clamp(56px,8vw,104px)] text-navy">
-        <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] items-start gap-[clamp(32px,5vw,64px)]">
-          <div className="flex flex-col gap-[18px]">
-            <h2 className="m-0 text-[clamp(32px,3.8vw,52px)] font-extrabold leading-[1.02] tracking-tighter2">Trouvons le bon accompagnement.</h2>
+      <section className={`bg-white ${X} py-[clamp(72px,10vw,144px)] text-navy`}>
+        <div className={`${wrap} grid items-start gap-[clamp(40px,6vw,96px)] lg:grid-cols-[1fr_1.1fr]`}>
+          <div className="flex flex-col gap-6 lg:sticky lg:top-28">
+            <RevealWords text="Trouvons le bon accompagnement." className="m-0 text-[clamp(34px,4.2vw,62px)] font-extrabold leading-none tracking-tighter2" />
             <p className="m-0 max-w-[460px] text-[17px] text-ink">Trois questions, et un conseiller vous recontacte avec une première proposition adaptée.</p>
-            <div className="flex flex-col gap-2 rounded-3xl bg-ice px-[26px] py-6" aria-live="polite">
-              <span className="text-sm font-bold text-ink-muted">Ce que nous vous conseillons</span>
-              <span className="text-2xl font-extrabold leading-[1.2] tracking-[-0.02em]">{advice.title}</span>
-              <span className="text-base text-ink">{PREFIX[prof] + advice.text}</span>
+            <div aria-live="polite" className="flex flex-col gap-2 border-l-0 border-t-2 border-navy pt-5">
+              <span className="text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">Ce que nous vous conseillons</span>
+              <span className="text-[clamp(26px,2.6vw,36px)] font-extrabold leading-[1.1] tracking-[-0.02em]">{advice.title}</span>
+              <span className="text-[17px] text-ink">{PREFIX[prof] + advice.text}</span>
             </div>
           </div>
-          <div className="flex flex-col gap-6 rounded-[28px] border-[1.5px] border-[#D5DEE8] p-[clamp(22px,3vw,36px)]">
-            {sent ? (
-              <div className="flex flex-col items-start gap-3.5 py-3">
-                <span className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-sun">
-                  <Check aria-hidden="true" size={28} strokeWidth={2.4} />
-                </span>
-                <span className="text-[26px] font-extrabold tracking-[-0.02em]">Demande envoyée</span>
-                <span className="text-base text-ink">Un conseiller vous recontacte sous un jour ouvré pour vous présenter une première proposition.</span>
-                <button type="button" onClick={() => setSent(false)} className="min-h-11 border-0 bg-transparent p-0 text-[15px] font-bold text-royal underline underline-offset-4">
-                  Faire une autre demande
-                </button>
-              </div>
-            ) : (
-              <form
-                className="flex flex-col gap-6"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  // [À brancher] : service d’envoi des demandes.
-                  setSent(true);
-                }}
-              >
-                <div role="group" aria-label="Votre profil" className="flex flex-col gap-2.5">
-                  <span className="text-base font-extrabold">Vous êtes</span>
-                  <div className="flex flex-wrap gap-2">
-                    {PROFILE_PILLS.map((l, i) => <Pill key={l} pressed={i === prof} onClick={() => setProf(i)}>{l}</Pill>)}
-                  </div>
-                </div>
-                <label className={labelCls}>
-                  Votre secteur d’activité
-                  <select className={inputCls}>
-                    <option>Commerce et distribution</option>
-                    <option>Services aux entreprises</option>
-                    <option>BTP et immobilier</option>
-                    <option>Transport et logistique</option>
-                    <option>Restauration et hôtellerie</option>
-                    <option>Bois, mines et industrie</option>
-                    <option>Autre secteur</option>
-                  </select>
+          {sent ? (
+            <div className="flex flex-col items-start gap-4 border-t-2 border-navy pt-8">
+              <span className="text-[clamp(32px,3.4vw,48px)] font-heavy leading-none tracking-tightest">Demande envoyée.</span>
+              <span className="text-lg text-ink">Un conseiller vous recontacte sous un jour ouvré pour vous présenter une première proposition.</span>
+              <button type="button" onClick={() => setSent(false)} className="sweep-link min-h-11 border-0 bg-transparent p-0 text-base font-bold text-royal">
+                Faire une autre demande
+              </button>
+            </div>
+          ) : (
+            <form
+              className="flex flex-col gap-9 border-t-2 border-navy pt-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                // [À brancher] : service d’envoi des demandes.
+                setSent(true);
+              }}
+            >
+              <Choice label="Vous êtes" items={PROFILE_PILLS} value={prof} onChange={setProf} />
+              <label className="flex flex-col gap-2 text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">
+                Votre secteur d’activité
+                <select className="line-input normal-case tracking-normal text-navy">
+                  <option>Commerce et distribution</option>
+                  <option>Services aux entreprises</option>
+                  <option>BTP et immobilier</option>
+                  <option>Transport et logistique</option>
+                  <option>Restauration et hôtellerie</option>
+                  <option>Bois, mines et industrie</option>
+                  <option>Autre secteur</option>
+                </select>
+              </label>
+              <Choice label="Votre besoin principal" items={NEED_PILLS} value={need} onChange={setNeed} />
+              <div className="grid gap-8 sm:grid-cols-2">
+                <label className="flex flex-col gap-2 text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">
+                  Nom ou entreprise
+                  <input required type="text" autoComplete="organization" className="line-input normal-case tracking-normal text-navy" />
                 </label>
-                <div role="group" aria-label="Votre besoin principal" className="flex flex-col gap-2.5">
-                  <span className="text-base font-extrabold">Votre besoin principal</span>
-                  <div className="flex flex-wrap gap-2">
-                    {NEED_PILLS.map((l, i) => <Pill key={l} pressed={i === need} onClick={() => setNeed(i)}>{l}</Pill>)}
-                  </div>
-                </div>
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-3.5">
-                  <label className={labelCls}>
-                    Nom ou entreprise
-                    <input required type="text" autoComplete="organization" className={inputCls} />
-                  </label>
-                  <label className={labelCls}>
-                    Téléphone ou WhatsApp
-                    <input required type="tel" autoComplete="tel" placeholder="+241" className={inputCls} />
-                  </label>
-                </div>
-                <button type="submit" className="min-h-14 rounded-full border-0 bg-navy text-base font-bold text-white">Recevoir une proposition</button>
-              </form>
-            )}
-          </div>
+                <label className="flex flex-col gap-2 text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">
+                  Téléphone ou WhatsApp
+                  <input required type="tel" autoComplete="tel" placeholder="+241" className="line-input normal-case tracking-normal text-navy" />
+                </label>
+              </div>
+              <ArrowButton type="submit" tone="navy" className="self-start">Recevoir une proposition</ArrowButton>
+            </form>
+          )}
         </div>
       </section>
     </>

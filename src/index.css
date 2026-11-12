@@ -109,6 +109,45 @@
     padding-left: 12px;
   }
 
+  /* Texte creux (contour seul) */
+  .outline-text {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px currentColor;
+    transition: -webkit-text-fill-color 0.45s ease;
+  }
+  @supports not (-webkit-text-stroke: 1px black) {
+    .outline-text {
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+  .value-row:hover .outline-text {
+    -webkit-text-fill-color: currentColor;
+  }
+
+  /* Lien souligné qui se trace au survol */
+  .sweep-link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+  }
+  .sweep-link:hover,
+  .sweep-link[aria-pressed='true'],
+  .sweep-link[aria-current='page'] {
+    background-size: 100% 2px;
+  }
+
+  /* Champ de formulaire en simple filet */
+  .line-input {
+    @apply min-h-[52px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 text-lg font-medium outline-none transition-colors;
+    border-bottom-color: color-mix(in srgb, currentColor 30%, transparent);
+  }
+  .line-input:focus {
+    border-bottom-color: theme("colors.sun.DEFAULT");
+  }
+
   .h-display {
     @apply m-0 font-extrabold leading-none tracking-tighter2;
   }
