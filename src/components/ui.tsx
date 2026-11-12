@@ -12,8 +12,8 @@ export function ArrowButton({
 }: ButtonHTMLAttributes<HTMLButtonElement> & { tone?: 'sun' | 'navy'; size?: 'md' | 'lg' }) {
   const base = tone === 'sun' ? 'bg-sun text-navy' : 'bg-navy text-white';
   const dot = tone === 'sun' ? 'bg-navy text-sun' : 'bg-sun text-navy';
-  const dims = size === 'lg' ? 'min-h-[58px] pl-[26px] pr-[7px] text-base' : 'min-h-[54px] pl-[22px] pr-[6px] text-[15px]';
-  const dotDims = size === 'lg' ? 'h-11 w-11' : 'h-[42px] w-[42px]';
+  const dims = size === 'lg' ? 'min-h-[52px] pl-[22px] pr-[6px] text-[15px]' : 'min-h-12 pl-5 pr-[5px] text-sm';
+  const dotDims = size === 'lg' ? 'h-10 w-10' : 'h-[38px] w-[38px]';
   return (
     <button
       type="button"

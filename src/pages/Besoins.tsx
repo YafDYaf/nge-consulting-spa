@@ -21,7 +21,7 @@ function Choice({ items, value, onChange, label }: { items: string[]; value: num
             type="button"
             aria-pressed={i === value}
             onClick={() => onChange(i)}
-            className={`sweep-link min-h-11 border-0 bg-transparent p-0 text-lg font-bold transition-colors ${i === value ? 'text-navy' : 'text-ink-muted hover:text-navy'}`}
+            className={`sweep-link min-h-11 border-0 bg-transparent p-0 text-base font-bold transition-colors ${i === value ? 'text-navy' : 'text-ink-muted hover:text-navy'}`}
           >
             {l}
           </button>
@@ -40,10 +40,10 @@ export default function Besoins() {
 
   return (
     <>
-      <section className={`${X} pb-[clamp(56px,8vw,104px)] pt-[clamp(56px,8vw,112px)]`}>
+      <section className={`${X} pb-[clamp(39px,5.2vw,68px)] pt-[clamp(39px,5.2vw,73px)]`}>
         <div className={`${wrap} grid items-end gap-x-16 gap-y-6 lg:grid-cols-[1.4fr_1fr]`}>
-          <SplitTitle strong="Partez de votre situation," light="pas de notre jargon." className="text-[clamp(44px,6.4vw,96px)] leading-[0.94]" />
-          <p className="fade-d1 m-0 max-w-[480px] text-lg text-mist">
+          <SplitTitle strong="Partez de votre situation," light="pas de notre jargon." className="text-[clamp(35px,4.4vw,65px)] leading-[0.94]" />
+          <p className="fade-d1 m-0 max-w-[480px] text-base text-mist">
             Vous n’avez pas besoin de savoir quel service demander. Dites-nous où en est votre entreprise, nous vous orientons.
           </p>
         </div>
@@ -55,17 +55,17 @@ export default function Besoins() {
           src={p.photo}
           alt={p.photoAlt}
           veil={i % 2 ? 'bg-gradient-to-l from-navy/95 via-navy/80 to-navy/30' : 'bg-gradient-to-r from-navy/95 via-navy/80 to-navy/30'}
-          className={`${X} py-[clamp(88px,12vw,176px)]`}
+          className={`${X} py-[clamp(62px,7.8vw,114px)]`}
         >
           <div className={`${wrap} flex ${i % 2 ? 'justify-end' : ''}`}>
             <article className="flex max-w-[680px] flex-col gap-5">
               <span className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: p.bg === '#E4F1F8' ? '#7FD6FA' : p.bg }}>
                 Profil {String(i + 1).padStart(2, '0')}
               </span>
-              <RevealWords text={p.title} className="m-0 text-[clamp(40px,5.4vw,80px)] font-heavy leading-[0.95] tracking-tightest" />
-              <p className="m-0 text-[clamp(20px,1.9vw,26px)] font-semibold leading-[1.3]">{p.question}</p>
-              <p className="m-0 text-[17px] text-mist">{p.text}</p>
-              <ul className="m-0 flex list-none flex-col gap-1.5 p-0 text-[17px]">
+              <RevealWords text={p.title} className="m-0 text-[clamp(32px,3.7vw,54px)] font-heavy leading-[0.95] tracking-tightest" />
+              <p className="m-0 text-[clamp(20px,1.7vw,24px)] font-semibold leading-[1.3]">{p.question}</p>
+              <p className="m-0 text-[15px] text-mist">{p.text}</p>
+              <ul className="m-0 flex list-none flex-col gap-1.5 p-0 text-[15px]">
                 {p.items.map((it) => (
                   <li key={it} className="flex gap-3">
                     <span aria-hidden="true" className="text-sun">—</span>
@@ -79,21 +79,21 @@ export default function Besoins() {
         </ParallaxBand>
       ))}
 
-      <section className={`bg-white ${X} py-[clamp(72px,10vw,144px)] text-navy`}>
-        <div className={`${wrap} grid items-start gap-[clamp(40px,6vw,96px)] lg:grid-cols-[1fr_1.1fr]`}>
+      <section className={`bg-white ${X} py-[clamp(50px,6.5vw,94px)] text-navy`}>
+        <div className={`${wrap} grid items-start gap-[clamp(28px,3.9vw,62px)] lg:grid-cols-[1fr_1.1fr]`}>
           <div className="flex flex-col gap-6 lg:sticky lg:top-28">
-            <RevealWords text="Trouvons le bon accompagnement." className="m-0 text-[clamp(34px,4.2vw,62px)] font-extrabold leading-none tracking-tighter2" />
-            <p className="m-0 max-w-[460px] text-[17px] text-ink">Trois questions, et un conseiller vous recontacte avec une première proposition adaptée.</p>
+            <RevealWords text="Trouvons le bon accompagnement." className="m-0 text-[clamp(27px,2.9vw,42px)] font-extrabold leading-none tracking-tighter2" />
+            <p className="m-0 max-w-[460px] text-[15px] text-ink">Trois questions, et un conseiller vous recontacte avec une première proposition adaptée.</p>
             <div aria-live="polite" className="flex flex-col gap-2 border-l-0 border-t-2 border-navy pt-5">
               <span className="text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">Ce que nous vous conseillons</span>
-              <span className="text-[clamp(26px,2.6vw,36px)] font-extrabold leading-[1.1] tracking-[-0.02em]">{advice.title}</span>
-              <span className="text-[17px] text-ink">{PREFIX[prof] + advice.text}</span>
+              <span className="text-[clamp(23px,2.1vw,29px)] font-extrabold leading-[1.1] tracking-[-0.02em]">{advice.title}</span>
+              <span className="text-[15px] text-ink">{PREFIX[prof] + advice.text}</span>
             </div>
           </div>
           {sent ? (
             <div className="flex flex-col items-start gap-4 border-t-2 border-navy pt-8">
-              <span className="text-[clamp(32px,3.4vw,48px)] font-heavy leading-none tracking-tightest">Demande envoyée.</span>
-              <span className="text-lg text-ink">Un conseiller vous recontacte sous un jour ouvré pour vous présenter une première proposition.</span>
+              <span className="text-[clamp(26px,2.3vw,33px)] font-heavy leading-none tracking-tightest">Demande envoyée.</span>
+              <span className="text-base text-ink">Un conseiller vous recontacte sous un jour ouvré pour vous présenter une première proposition.</span>
               <button type="button" onClick={() => setSent(false)} className="sweep-link min-h-11 border-0 bg-transparent p-0 text-base font-bold text-royal">
                 Faire une autre demande
               </button>

@@ -113,14 +113,14 @@ export function IndexRow({
   const inner = (
     <>
       {index && <span className={`text-[15px] font-bold tabular-nums opacity-70 transition-colors duration-500 ${hoverText}`}>{index}</span>}
-      <span className={`text-[clamp(26px,3.4vw,48px)] font-extrabold leading-[1.05] tracking-[-0.03em] transition-[color,transform] duration-500 ease-out group-hover:translate-x-3 ${text ? '' : 'md:col-span-2'} ${hoverText}`}>
+      <span className={`text-[clamp(21px,2.3vw,33px)] font-extrabold leading-[1.05] tracking-[-0.03em] transition-[color,transform] duration-500 ease-out group-hover:translate-x-3 ${text ? '' : 'md:col-span-2'} ${hoverText}`}>
         {title}
       </span>
-      {text && <span className={`max-w-[440px] text-base max-md:col-span-3 max-md:row-start-2 transition-colors duration-500 ${sub} ${hoverText}`}>{text}</span>}
-      <ArrowUpRight aria-hidden="true" size={28} className={`justify-self-end transition-[transform,color] duration-500 group-hover:rotate-45 ${hoverText}`} />
+      {text && <span className={`max-w-[440px] text-[15px] max-md:col-span-3 max-md:row-start-2 transition-colors duration-500 ${sub} ${hoverText}`}>{text}</span>}
+      <ArrowUpRight aria-hidden="true" size={22} className={`justify-self-end transition-[transform,color] duration-500 group-hover:rotate-45 ${hoverText}`} />
     </>
   );
-  const cls = `group relative isolate grid grid-cols-[auto_1fr_auto] items-center gap-x-6 gap-y-2 border-b ${line} py-[clamp(20px,2.6vw,32px)] no-underline before:absolute before:inset-0 before:-z-10 before:origin-bottom before:scale-y-0 before:transition-transform before:duration-500 before:ease-out hover:before:scale-y-100 ${sweep} md:grid-cols-[60px_1.1fr_1fr_auto] [&>*]:px-[clamp(8px,1.5vw,20px)]`;
+  const cls = `group relative isolate grid grid-cols-[auto_1fr_auto] items-center gap-x-6 gap-y-2 border-b ${line} py-[clamp(17px,2.1vw,26px)] no-underline before:absolute before:inset-0 before:-z-10 before:origin-bottom before:scale-y-0 before:transition-transform before:duration-500 before:ease-out hover:before:scale-y-100 ${sweep} md:grid-cols-[52px_1.1fr_1fr_auto] [&>*]:px-[clamp(8px,1.5vw,20px)]`;
   if (onClick) {
     return (
       <button type="button" onClick={onClick} className={`${cls} w-full border-x-0 border-t-0 bg-transparent text-left text-inherit`}>
