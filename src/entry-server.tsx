@@ -6,8 +6,9 @@ import { StaticRouter } from 'react-router-dom';
 import App from './App';
 import { headTags, metaFor, ROUTES } from './seo';
 import { SITE_URL } from './site';
+import { ARTICLES } from './data/articles';
 
-export { ROUTES, SITE_URL };
+export { ROUTES, SITE_URL, ARTICLES };
 
 export function render(url: string) {
   const html = renderToString(
