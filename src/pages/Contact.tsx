@@ -19,7 +19,7 @@ function Row({ icon, label, children, href, last }: { icon: ReactNode; label: st
       <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-full bg-navy-800 text-sun">{icon}</span>
       <span className="flex min-w-0 flex-col">
         <span className="text-sm text-mist-2">{label}</span>
-        <span className="break-words text-lg font-extrabold">{children}</span>
+        <span className="break-words text-base font-extrabold sm:text-lg">{children}</span>
       </span>
     </>
   );
@@ -38,18 +38,18 @@ export default function Contact() {
 
   return (
     <>
-      <section className="bg-navy px-[clamp(20px,5vw,72px)] pb-[clamp(120px,14vw,180px)] pt-[clamp(48px,7vw,88px)]">
-        <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] items-end gap-x-16 gap-y-6">
-          <SplitTitle strong="Parlons de" light="votre besoin." className="text-[clamp(44px,6vw,84px)]" />
-          <p className="fade-d1 m-0 max-w-[460px] text-lg text-mist">
+      <section className="bg-navy px-5 pb-[clamp(104px,12vw,160px)] pt-[clamp(40px,6vw,80px)] sm:px-8 xl:px-[clamp(32px,5vw,72px)]">
+        <div className="mx-auto grid max-w-site grid-cols-[minmax(0,1fr)] items-end gap-x-16 gap-y-5 lg:grid-cols-2">
+          <SplitTitle strong="Parlons de" light="votre besoin." className="text-[clamp(40px,5.4vw,76px)]" />
+          <p className="fade-d1 m-0 max-w-[460px] text-base text-mist sm:text-lg">
             Écrivez-nous, appelez-nous ou réservez directement un créneau. Un conseiller vous répond sous un jour ouvré.
           </p>
         </div>
       </section>
 
-      <section className="bg-white px-[clamp(16px,3vw,40px)] pb-[clamp(56px,8vw,104px)] text-navy">
-        <div className="relative mx-auto -mt-[clamp(80px,10vw,140px)] grid max-w-wide grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] items-start gap-4">
-          <div className="rounded-panel bg-white p-[clamp(22px,3.4vw,40px)] shadow-[0_30px_70px_rgba(4,14,28,0.18)]">
+      <section className="bg-white px-4 pb-[clamp(56px,8vw,104px)] text-navy sm:px-8 xl:px-10">
+        <div className="relative mx-auto -mt-[clamp(72px,9vw,120px)] grid max-w-wide grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-6">
+          <div className="rounded-[28px] bg-white p-6 shadow-[0_30px_70px_rgba(4,14,28,0.18)] sm:p-9 lg:rounded-panel lg:p-10">
             {sent ? (
               <div className="flex flex-col items-start gap-3.5 py-4">
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-sun">
@@ -65,7 +65,7 @@ export default function Contact() {
               </div>
             ) : (
               <form
-                className="flex flex-col gap-[22px]"
+                className="flex flex-col gap-6"
                 onSubmit={(e) => {
                   e.preventDefault();
                   // [À brancher] : envoi réel (Formspree, Resend, API du cabinet…).
@@ -118,13 +118,13 @@ export default function Contact() {
             )}
           </div>
 
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3.5 rounded-panel bg-sun p-[clamp(22px,3.4vw,36px)]">
+          <div className="flex flex-col gap-5 lg:gap-6">
+            <div className="flex flex-col gap-3.5 rounded-[28px] bg-sun p-6 sm:p-9 lg:rounded-panel">
               <h2 className="m-0 text-[clamp(24px,2.4vw,30px)] font-extrabold leading-[1.1] tracking-[-0.02em]">Vous préférez choisir votre créneau ?</h2>
               <p className="m-0 text-base">Réservez un premier échange de trente minutes, au cabinet, en visioconférence ou par téléphone.</p>
               <ArrowButton tone="navy" size="md" onClick={openRdv} className="self-start">Prendre rendez-vous</ArrowButton>
             </div>
-            <address className="flex flex-col rounded-panel bg-navy px-[clamp(22px,3vw,32px)] py-2 not-italic text-white">
+            <address className="flex flex-col rounded-[28px] bg-navy px-6 py-2 not-italic text-white sm:px-9 lg:rounded-panel">
               <Row icon={<Phone aria-hidden="true" size={20} />} label="Téléphone" href={SITE.phoneHref}>{SITE.phone}</Row>
               <Row icon={<Mail aria-hidden="true" size={20} />} label="E-mail" href={`mailto:${SITE.email}`}>{SITE.email}</Row>
               <Row icon={<MessageCircle aria-hidden="true" size={20} />} label="WhatsApp">[Numéro WhatsApp professionnel]</Row>
@@ -135,7 +135,7 @@ export default function Contact() {
             <PhotoPlaceholder
               title="Carte du quartier Nombakélé"
               note="À intégrer une fois l’adresse exacte du cabinet confirmée."
-              className="min-h-[220px] rounded-panel bg-ice text-ink"
+              className="min-h-[200px] rounded-[28px] bg-ice text-ink lg:rounded-panel"
             />
           </div>
         </div>
