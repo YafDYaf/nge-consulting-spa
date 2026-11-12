@@ -10,7 +10,7 @@ const dist = path.join(root, 'dist');
 const ssrEntry = path.join(root, 'dist-ssr', 'entry-server.js');
 
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf-8');
-const { render, ROUTES, SITE_URL } = await import(pathToFileURL(ssrEntry).href);
+const { render, ROUTES, SITE_URL, ARTICLES } = await import(pathToFileURL(ssrEntry).href);
 
 const page = (url) => {
   const { html, head } = render(url);
@@ -57,6 +57,9 @@ Contact : +241 11 76 29 55 · ngeconsulting.gabon@gmail.com · BP 13149, Nombak�
 - [Vos besoins](${loc('/vos-besoins')}): accompagnement selon le profil (créateur, TPE, PME)
 - [Ressources](${loc('/ressources')}): articles et guides pratiques
 - [Contact](${loc('/contact')}): coordonnées et prise de rendez-vous
+
+## Articles
+${ARTICLES.map((a) => `- [${a.title}](${loc(a.path)}): ${a.summary}`).join('\n')}
 `,
 );
 

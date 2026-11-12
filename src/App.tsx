@@ -6,6 +6,7 @@ import Cabinet from './pages/Cabinet';
 import Besoins from './pages/Besoins';
 import Ressources from './pages/Ressources';
 import Contact from './pages/Contact';
+import Article from './pages/Article';
 import NotFound from './pages/NotFound';
 
 // Les routes doivent rester alignées avec PAGES dans src/seo.ts (prérendu, sitemap, balises).
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="cabinet" element={<Cabinet />} />
         <Route path="vos-besoins" element={<Besoins />} />
         <Route path="ressources" element={<Ressources />} />
+        <Route path="ressources/:slug" element={<Article />} />
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Route>

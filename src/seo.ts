@@ -1,5 +1,7 @@
 import { SITE, SITE_URL } from './site';
 import { FAQ, SERVICES } from './data/content';
+import { ARTICLES, articleBySlug } from './data/articles';
+import type { Article } from './data/articles';
 import ogImage from './assets/photos/equipe-reunion.webp';
 import logo from './assets/logo-nge.png';
 
@@ -10,6 +12,8 @@ export type PageMeta = {
   /** Nom court pour le fil d'Ariane */
   crumb: string;
   noindex?: boolean;
+  /** Présent sur les pages d'article. */
+  article?: Article;
 };
 
 // Titles ≤ 60 caractères et descriptions ≤ 155 caractères, rédigés pour la requête locale
@@ -66,10 +70,26 @@ export const PAGES: Record<string, PageMeta> = {
   },
 };
 
-export const ROUTES = Object.keys(PAGES).filter((p) => p !== '/404');
+export const ROUTES = [...Object.keys(PAGES).filter((p) => p !== '/404'), ...ARTICLES.map((a) => a.path)];
+
+function articleMeta(a: Article): PageMeta {
+  const suffix = ' | N.G.E Consulting';
+  return {
+    path: a.path,
+    crumb: a.title,
+    title: a.title.length + suffix.length <= 70 ? a.title + suffix : a.title,
+    description: a.summary,
+    article: a,
+  };
+}
 
 export function metaFor(pathname: string): PageMeta {
   const clean = pathname.replace(/\/+$/, '') || '/';
+  const m = clean.match(/^\/ressources\/([^/]+)$/);
+  if (m) {
+    const a = articleBySlug(m[1]);
+    return a ? articleMeta(a) : PAGES['/404'];
+  }
   return PAGES[clean] ?? PAGES['/404'];
 }
 
@@ -125,12 +145,32 @@ export function jsonLdFor(meta: PageMeta): object[] {
     },
   ];
   if (meta.path !== '/') {
+    const trail = meta.article
+      ? [
+          { name: 'Ressources', item: abs('/ressources') },
+          { name: meta.crumb, item: abs(meta.path) },
+        ]
+      : [{ name: meta.crumb, item: abs(meta.path) }];
     graph.push({
       '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE_URL + '/' },
-        { '@type': 'ListItem', position: 2, name: meta.crumb, item: abs(meta.path) },
-      ],
+      itemListElement: [{ name: 'Accueil', item: SITE_URL + '/' }, ...trail].map((t, i) => ({ '@type': 'ListItem', position: i + 1, ...t })),
+    });
+  }
+  if (meta.article) {
+    const a = meta.article;
+    // [À compléter] : datePublished / dateModified dès que les dates de publication sont fixées.
+    graph.push({
+      '@type': 'Article',
+      '@id': abs(a.path) + '#article',
+      headline: a.title,
+      description: a.summary,
+      image: abs(a.photo),
+      articleSection: a.category,
+      inLanguage: 'fr-GA',
+      mainEntityOfPage: { '@id': abs(a.path) + '#page' },
+      author: { '@id': `${SITE_URL}/#cabinet` },
+      publisher: { '@id': `${SITE_URL}/#cabinet` },
+      ...(a.sources.length ? { citation: a.sources } : {}),
     });
   }
   if (meta.path === '/expertises') {
@@ -171,13 +211,13 @@ export function headTags(meta: PageMeta): string {
       ? `<meta name="robots" content="noindex">`
       : `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">`,
     meta.noindex ? '' : `<link rel="canonical" href="${url}">`,
-    `<meta property="og:type" content="website">`,
+    `<meta property="og:type" content="${meta.article ? 'article' : 'website'}">`,
     `<meta property="og:locale" content="fr_FR">`,
     `<meta property="og:site_name" content="${SITE.name}">`,
     `<meta property="og:title" content="${esc(meta.title)}">`,
     `<meta property="og:description" content="${esc(meta.description)}">`,
     `<meta property="og:url" content="${url}">`,
-    `<meta property="og:image" content="${abs(ogImage)}">`,
+    `<meta property="og:image" content="${abs(meta.article?.photo ?? ogImage)}">`,
     `<meta name="twitter:card" content="summary_large_image">`,
     ...jsonLdFor(meta).map(
       (j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, '\\u003c')}</script>`,
