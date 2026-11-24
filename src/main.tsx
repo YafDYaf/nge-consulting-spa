@@ -8,7 +8,7 @@ import App from './App.tsx';
 const container = document.getElementById('root')!;
 const app = (
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <App />
     </BrowserRouter>
   </StrictMode>
