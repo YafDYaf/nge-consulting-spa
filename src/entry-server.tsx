@@ -11,9 +11,11 @@ import { ARTICLES } from './data/articles';
 export { ROUTES, SITE_URL, ARTICLES };
 
 export function render(url: string) {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const location = base + (url.startsWith('/') ? url : `/${url}`);
   const html = renderToString(
     <StrictMode>
-      <StaticRouter location={url}>
+      <StaticRouter basename={import.meta.env.BASE_URL} location={location}>
         <App />
       </StaticRouter>
     </StrictMode>,

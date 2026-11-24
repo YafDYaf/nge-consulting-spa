@@ -1,0 +1,252 @@
+name: Déployer les deux variantes sur GitHub Pages
+
+on:
+  push:
+    branches:
+      - Refonte-site01
+      - Refonte-site02-typo
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer la branche Refonte-site01
+        uses: actions/checkout@v4
+        with:
+          ref: Refonte-site01
+          path: src-site01
+
+      - name: Récupérer la branche Refonte-site02-typo
+        uses: actions/checkout@v4
+        with:
+          ref: Refonte-site02-typo
+          path: src-site02
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Configurer GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Compiler Refonte-site01
+        working-directory: src-site01
+        env:
+          VITE_BASE: ${{ steps.pages.outputs.base_path }}/site01/
+          VITE_SITE_URL: ${{ steps.pages.outputs.base_url }}/site01
+        run: |
+          npm ci
+          npm run build
+
+      - name: Compiler Refonte-site02-typo
+        working-directory: src-site02
+        env:
+          VITE_BASE: ${{ steps.pages.outputs.base_path }}/site02/
+          VITE_SITE_URL: ${{ steps.pages.outputs.base_url }}/site02
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assembler le site comparatif
+        run: |
+          mkdir -p site
+          cp -r src-site01/dist site/site01
+          cp -r src-site02/dist site/site02
+          touch site/.nojekyll
+          cat <<'EOF' > site/index.html
+          <!doctype html>
+          <html lang="fr">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <meta name="robots" content="noindex, nofollow" />
+              <title>N.G.E Consulting — Aperçu des deux variantes</title>
+              <link rel="icon" href="./site01/favicon.ico" sizes="32x32" />
+              <style>
+                :root {
+                  --navy: #0e2238;
+                  --navy-2: #163252;
+                  --sun: #f4b41a;
+                  --ink: #102033;
+                  --muted: #526277;
+                  --bg: #f6f8fb;
+                  --card: #ffffff;
+                  --border: #dfe6ef;
+                }
+                * { box-sizing: border-box; }
+                body {
+                  margin: 0;
+                  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                  background: var(--bg);
+                  color: var(--ink);
+                  min-height: 100vh;
+                  display: flex;
+                  flex-direction: column;
+                }
+                header {
+                  background: var(--navy);
+                  color: #fff;
+                  padding: 36px 24px 40px;
+                }
+                .wrap {
+                  max-width: 980px;
+                  margin: 0 auto;
+                  width: 100%;
+                }
+                .eyebrow {
+                  display: inline-block;
+                  font-size: 12px;
+                  font-weight: 700;
+                  letter-spacing: 0.08em;
+                  text-transform: uppercase;
+                  color: var(--sun);
+                  margin-bottom: 10px;
+                }
+                h1 {
+                  margin: 0 0 10px;
+                  font-size: clamp(24px, 4vw, 34px);
+                  line-height: 1.2;
+                }
+                header p {
+                  margin: 0;
+                  color: #cbd7e6;
+                  max-width: 640px;
+                  line-height: 1.55;
+                }
+                main {
+                  flex: 1;
+                  padding: 36px 24px 56px;
+                }
+                .grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+                  gap: 24px;
+                }
+                .card {
+                  background: var(--card);
+                  border: 1px solid var(--border);
+                  border-radius: 16px;
+                  padding: 28px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  box-shadow: 0 8px 24px rgba(14, 34, 56, 0.06);
+                }
+                .badge {
+                  display: inline-block;
+                  font-size: 12px;
+                  font-weight: 700;
+                  padding: 4px 10px;
+                  border-radius: 999px;
+                  background: #eef3f9;
+                  color: var(--navy);
+                  margin-bottom: 14px;
+                  width: fit-content;
+                }
+                .card h2 {
+                  margin: 0 0 10px;
+                  font-size: 22px;
+                  color: var(--navy);
+                }
+                .card p {
+                  margin: 0 0 24px;
+                  color: var(--muted);
+                  line-height: 1.55;
+                  font-size: 15px;
+                }
+                .btn {
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 8px;
+                  background: var(--navy);
+                  color: #fff;
+                  text-decoration: none;
+                  font-weight: 700;
+                  font-size: 15px;
+                  padding: 13px 20px;
+                  border-radius: 999px;
+                  transition: background 0.2s ease, transform 0.2s ease;
+                }
+                .btn:hover {
+                  background: var(--navy-2);
+                  transform: translateY(-1px);
+                }
+                .btn-alt {
+                  background: var(--sun);
+                  color: var(--navy);
+                }
+                .btn-alt:hover {
+                  background: #e5a400;
+                }
+                footer {
+                  text-align: center;
+                  padding: 20px;
+                  font-size: 13px;
+                  color: var(--muted);
+                }
+              </style>
+            </head>
+            <body>
+              <header>
+                <div class="wrap">
+                  <span class="eyebrow">Présentation client</span>
+                  <h1>N.G.E Consulting — Comparatif des deux propositions</h1>
+                  <p>Sélectionnez ci-dessous la variante que vous souhaitez consulter. Les deux versions incluent l’ensemble des pages, articles et formulaires.</p>
+                </div>
+              </header>
+              <main>
+                <div class="wrap">
+                  <div class="grid">
+                    <article class="card">
+                      <div>
+                        <span class="badge">Branche Refonte-site01</span>
+                        <h2>Variante 01 — Classique</h2>
+                        <p>Première proposition de refonte du site N.G.E Consulting (mise en page et typographie d’origine).</p>
+                      </div>
+                      <a class="btn" href="./site01/">Ouvrir la variante 01 →</a>
+                    </article>
+                    <article class="card">
+                      <div>
+                        <span class="badge">Branche Refonte-site02-typo</span>
+                        <h2>Variante 02 — Typographie</h2>
+                        <p>Seconde proposition avec travail typographique, effets et ajustements de mise en page.</p>
+                      </div>
+                      <a class="btn btn-alt" href="./site02/">Ouvrir la variante 02 →</a>
+                    </article>
+                  </div>
+                </div>
+              </main>
+              <footer>N.G.E Consulting · Prévisualisation GitHub Pages</footer>
+            </body>
+          </html>
+          EOF
+          cp site/index.html site/404.html
+
+      - name: Envoyer l'artefact Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Déployer sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

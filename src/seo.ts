@@ -93,7 +93,13 @@ export function metaFor(pathname: string): PageMeta {
   return PAGES[clean] ?? PAGES['/404'];
 }
 
-const abs = (p: string) => (p.startsWith('http') ? p : SITE_URL + p);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteOrigin = SITE_URL.startsWith('http') ? new URL(SITE_URL).origin : SITE_URL;
+const abs = (p: string) => {
+  if (p.startsWith('http')) return p;
+  if (basePath && p.startsWith(basePath + '/')) return siteOrigin + p;
+  return SITE_URL + p;
+};
 
 /** Entité principale : le cabinet (AccountingService est un sous-type de LocalBusiness). */
 function organization() {
