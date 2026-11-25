@@ -67,7 +67,7 @@ export default function Cabinet() {
           </div>
           <ul className="m-0 list-none border-t-2 border-navy p-0">
             {TEAM.map((m) => (
-              <li key={m.role} className="grid items-baseline gap-x-10 gap-y-1 border-b border-[#BFD3E3] py-5 md:grid-cols-[1fr_1fr_1.2fr]">
+              <li key={m.role} className="grid items-baseline gap-x-10 gap-y-1 border-b border-rule-strong py-5 md:grid-cols-[1fr_1fr_1.2fr]">
                 <span className="text-[clamp(19px,1.9vw,26px)] font-extrabold tracking-[-0.02em]">[Prénom Nom]</span>
                 <span className="text-base font-semibold text-royal">{m.role}</span>
                 <span className="text-[15px] text-ink-muted">[Parcours et qualifications, en une ligne]</span>
@@ -77,7 +77,7 @@ export default function Cabinet() {
         </div>
       </section>
 
-      <section className={`bg-sun ${X} py-[clamp(50px,6.5vw,94px)] text-navy`}>
+      <section className={`bg-band ${X} py-[clamp(50px,6.5vw,94px)] text-on-band`}>
         <div className={`${wrap} flex flex-col gap-10`}>
           <p className="m-0 text-[clamp(35px,5.2vw,82px)] font-heavy leading-[0.92] tracking-tightest">
             Écouter. Comprendre.

@@ -5,11 +5,12 @@ import { Plus } from 'lucide-react';
 import { ArrowButton } from '../components/ui';
 import { IndexRow, OutlineNumber, ParallaxBand, RevealWords, ScrollFillText } from '../components/effects';
 import { useRdv } from '../components/rdv-context';
-import { DEADLINES, EINVOICE_CHECKS, FAQ, METHOD, ORGS, REVIEWS, SERVICES, SITUATIONS } from '../data/content';
+import { DEADLINES, EINVOICE_CHECKS, FAQ, METHOD, ORGS, REVIEWS, SERVICES, SITUATIONS, type Situation } from '../data/content';
 import { SITE } from '../site';
 import { articleBySlug } from '../data/articles';
 import logo from '../assets/logo-nge.png';
 import teamPhoto from '../assets/photos/equipe-reunion.webp';
+import { SeasonLogo } from '../components/season';
 
 const X = 'px-[clamp(20px,5vw,72px)]';
 const wrap = 'mx-auto max-w-site';
@@ -18,12 +19,7 @@ function Hero() {
   const { openRdv } = useRdv();
   return (
     <section className={`relative overflow-hidden ${X} pb-[clamp(45px,5.9vw,83px)] pt-[clamp(39px,5.2vw,73px)]`}>
-      <img
-        src={logo}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-[12vw] top-1/2 h-[min(56vw,540px)] w-[min(64vw,620px)] -translate-y-1/2 object-contain opacity-[0.12] mix-blend-screen"
-      />
+      <SeasonLogo fallback={logo} tails className="pointer-events-none absolute -right-[12vw] top-1/2 h-[min(56vw,540px)] w-[min(64vw,620px)] -translate-y-1/2 object-contain opacity-[0.12] mix-blend-screen" />
       <div className={`relative ${wrap} flex flex-col gap-[clamp(24px,3.2vw,38px)]`}>
         <p className="fade-d1 m-0 text-sm font-bold uppercase tracking-[0.2em] text-sky">Cabinet comptable · Libreville, Gabon</p>
         <h1 className="m-0 text-[clamp(42px,5.7vw,87px)] leading-[0.92] tracking-[-0.045em]">
@@ -55,7 +51,7 @@ function Hero() {
 }
 
 /** Bandeau des institutions en grandes lettres creuses. */
-function OrgsMarquee() {
+export function OrgsMarquee() {
   const items = [...ORGS, ...ORGS];
   return (
     <section aria-label="Administrations et référentiels" className="overflow-hidden border-y border-navy-line py-[clamp(15px,1.9vw,24px)]">
@@ -83,44 +79,49 @@ function Manifesto() {
   );
 }
 
-function Calendar() {
+export function Calendar({
+  title = 'L’année d’une entreprise au Gabon tient dans quelques dates.',
+  text = 'Nous les suivons pour vous, et vous prévenons par e-mail ou WhatsApp avant chacune d’elles.',
+  items = DEADLINES,
+  note = 'Calendrier type d’une PME soumise à la TVA et employeur. Dates indicatives tirées de la loi de finances 2026, à valider par le cabinet avant publication.',
+}: { title?: string; text?: string; items?: { when: string; rule: string; what: string }[]; note?: string }) {
   return (
-    <section id="calendrier" className={`bg-sun ${X} py-[clamp(45px,5.9vw,83px)] text-navy`}>
+    <section id="calendrier" className={`bg-band ${X} py-[clamp(45px,5.9vw,83px)] text-on-band`}>
       <div className={`${wrap} flex flex-col gap-[clamp(25px,3.2vw,42px)]`}>
         <div className="grid items-end gap-6 md:grid-cols-[1.4fr_1fr]">
-          <RevealWords text="L’année d’une entreprise au Gabon tient dans quelques dates." className="m-0 text-[clamp(27px,3.1vw,46px)] font-extrabold leading-[1] tracking-tighter2" />
-          <p className="m-0 max-w-[380px] text-base">Nous les suivons pour vous, et vous prévenons par e-mail ou WhatsApp avant chacune d’elles.</p>
+          <RevealWords text={title} className="m-0 text-[clamp(27px,3.1vw,46px)] font-extrabold leading-[1] tracking-tighter2" />
+          <p className="m-0 max-w-[380px] text-base">{text}</p>
         </div>
-        <dl className="m-0 grid border-t-2 border-navy sm:grid-cols-2 lg:grid-cols-4">
-          {DEADLINES.map((d) => (
-            <div key={d.when} className="scroll-pop flex flex-col gap-2 border-b border-sun-deep py-5 pr-6 lg:border-b-0">
+        <dl className="m-0 grid border-t-2 border-on-band sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((d) => (
+            <div key={d.when} className="scroll-pop flex flex-col gap-2 border-b border-band-line py-5 pr-6 lg:border-b-0">
               <dt className="text-[clamp(35px,3.4vw,49px)] font-heavy leading-none tracking-tightest">{d.when}</dt>
               <dd className="m-0 flex flex-col gap-1.5">
                 <span className="text-base font-bold">{d.rule}</span>
-                <span className="text-[15px] text-[#2A3442]">{d.what}</span>
+                <span className="text-[15px] text-on-band/90">{d.what}</span>
               </dd>
             </div>
           ))}
         </dl>
-        <p className="m-0 text-[13px] text-[#3A3200]">
-          Calendrier type d’une PME soumise à la TVA et employeur. Dates indicatives tirées de la loi de finances 2026, à valider par le cabinet avant publication.
+        <p className="m-0 text-[13px] text-on-band/80">
+          {note}
         </p>
       </div>
     </section>
   );
 }
 
-function SituationSwitcher() {
+export function SituationSwitcher({ items = SITUATIONS }: { items?: Situation[] }) {
   const { openRdv } = useRdv();
   const [picked, setPicked] = useState(0);
-  const cur = SITUATIONS[picked];
+  const cur = items[picked];
   return (
     <section id="besoins" className={`swap ${X} py-[clamp(50px,6.5vw,94px)]`} style={{ background: cur.bg, color: cur.fg }}>
       <div className={`${wrap} flex flex-col gap-[clamp(22px,3.2vw,36px)]`}>
         <div className="flex flex-col gap-6">
           <h2 className="m-0 text-sm font-bold uppercase tracking-[0.2em] opacity-80">Où en est votre entreprise ?</h2>
           <div role="group" aria-label="Choisissez votre situation" className="flex flex-wrap gap-x-8 gap-y-3">
-            {SITUATIONS.map((s, i) => (
+            {items.map((s, i) => (
               <button
                 key={s.label}
                 type="button"
@@ -160,7 +161,7 @@ function SituationSwitcher() {
   );
 }
 
-function Expertises() {
+export function Expertises() {
   return (
     <section id="expertises" className={`${X} py-[clamp(50px,6.5vw,94px)]`}>
       <div className={`${wrap} flex flex-col gap-[clamp(22px,3.2vw,36px)]`}>
@@ -178,35 +179,49 @@ function Expertises() {
   );
 }
 
-function EInvoiceCheck() {
-  const [done, setDone] = useState([false, false, false, false]);
+type ChecklistProps = {
+  id?: string;
+  title?: string;
+  intro?: string;
+  items?: string[];
+  /** Messages pour : tout coché, au moins la moitié, moins. */
+  verdicts?: [string, string, string];
+  note?: string;
+};
+
+export function Checklist({
+  id = 'facture',
+  title = 'Facture électronique : êtes-vous prêt ?',
+  intro = 'La loi de finances 2026 généralise la facture électronique normalisée. Sans elle, une charge peut ne plus être déductible et la TVA ne plus être récupérable. Cochez ce qui est déjà en place chez vous.',
+  items = EINVOICE_CHECKS,
+  verdicts = [
+    'Vous êtes bien organisé. Nous pouvons vérifier les détails avec vous.',
+    'Vous êtes sur la bonne voie. Il reste quelques points à sécuriser.',
+    'Commençons par le début : un échange de trente minutes suffit pour faire le point.',
+  ],
+  note = 'Contenu à valider par le cabinet au regard des textes officiels.',
+}: ChecklistProps) {
+  const [done, setDone] = useState(() => items.map(() => false));
   const n = done.filter(Boolean).length;
-  const text =
-    n === 4
-      ? 'Vous êtes bien organisé. Nous pouvons vérifier les détails avec vous.'
-      : n >= 2
-        ? 'Vous êtes sur la bonne voie. Il reste quelques points à sécuriser.'
-        : 'Commençons par le début : un échange de trente minutes suffit pour faire le point.';
+  const text = n === items.length ? verdicts[0] : n >= items.length / 2 ? verdicts[1] : verdicts[2];
   return (
-    <section id="facture" className={`bg-ice ${X} py-[clamp(50px,6.5vw,94px)] text-navy`}>
+    <section id={id} className={`bg-ice ${X} py-[clamp(50px,6.5vw,94px)] text-navy`}>
       <div className={`${wrap} grid items-start gap-[clamp(28px,3.9vw,62px)] lg:grid-cols-[1fr_1.1fr]`}>
         <div className="flex flex-col gap-6 lg:sticky lg:top-28">
-          <RevealWords text="Facture électronique : êtes-vous prêt ?" className="m-0 text-[clamp(27px,2.9vw,42px)] font-extrabold leading-none tracking-tighter2" />
-          <p className="m-0 max-w-[500px] text-[15px] text-ink">
-            La loi de finances 2026 généralise la facture électronique normalisée. Sans elle, une charge peut ne plus être déductible et la TVA ne plus être récupérable. Cochez ce qui est déjà en place chez vous.
-          </p>
+          <RevealWords text={title} className="m-0 text-[clamp(27px,2.9vw,42px)] font-extrabold leading-none tracking-tighter2" />
+          <p className="m-0 max-w-[500px] text-[15px] text-ink">{intro}</p>
           <div aria-live="polite" className="flex items-end gap-5">
             <span className="text-[clamp(77px,8.2vw,122px)] font-heavy leading-[0.8] tracking-tightest">
               {n}
-              <OutlineNumber className="text-royal">/4</OutlineNumber>
+              <OutlineNumber className="text-royal">/{items.length}</OutlineNumber>
             </span>
             <span className="max-w-[260px] pb-2 text-base font-semibold">{text}</span>
           </div>
-          <p className="m-0 text-[13px] text-ink">Contenu à valider par le cabinet au regard des textes officiels.</p>
+          <p className="m-0 text-[13px] text-ink">{note}</p>
         </div>
         <ul className="m-0 list-none border-t-2 border-navy p-0">
-          {EINVOICE_CHECKS.map((label, i) => (
-            <li key={label} className="border-b border-[#BFD3E3]">
+          {items.map((label, i) => (
+            <li key={label} className="border-b border-rule-strong">
               <label className="group flex cursor-pointer items-start gap-5 py-5">
                 <input
                   type="checkbox"
@@ -224,10 +239,10 @@ function EInvoiceCheck() {
   );
 }
 
-function Method() {
+export function Method() {
   return (
     <section id="methode" className={`bg-ice ${X} pb-[clamp(50px,6.5vw,94px)] text-navy`}>
-      <div className={`${wrap} flex flex-col gap-[clamp(28px,3.2vw,42px)] border-t border-[#BFD3E3] pt-[clamp(45px,5.2vw,73px)]`}>
+      <div className={`${wrap} flex flex-col gap-[clamp(28px,3.2vw,42px)] border-t border-rule-strong pt-[clamp(45px,5.2vw,73px)]`}>
         <RevealWords text="Du premier rendez-vous au suivi mensuel." className="m-0 max-w-[900px] text-[clamp(27px,2.9vw,42px)] font-extrabold leading-none tracking-tighter2" />
         <ol className="m-0 grid list-none gap-x-10 gap-y-12 p-0 sm:grid-cols-2 lg:grid-cols-4">
           {METHOD.map((m, i) => (
@@ -243,7 +258,7 @@ function Method() {
   );
 }
 
-function Testimonial() {
+export function Testimonial() {
   const [i, setI] = useState(0);
   const r = REVIEWS[i];
   return (
@@ -289,18 +304,22 @@ function Testimonial() {
   );
 }
 
-function Faq() {
+export function Faq({
+  title = 'Les questions qu’on nous pose.',
+  intro = 'Vous ne trouvez pas la vôtre ? Écrivez-nous, un conseiller vous répond sous un jour ouvré.',
+  items = FAQ,
+}: { title?: string; intro?: string; items?: { question: string; answer: string }[] }) {
   return (
     <section id="questions" className={`bg-white ${X} py-[clamp(50px,6.5vw,94px)] text-navy`}>
       <div className={`${wrap} grid items-start gap-x-20 gap-y-10 lg:grid-cols-[1fr_1.4fr]`}>
         <div className="flex flex-col gap-5 lg:sticky lg:top-28">
-          <RevealWords text="Les questions qu’on nous pose." className="m-0 text-[clamp(27px,2.9vw,42px)] font-extrabold leading-none tracking-tighter2" />
-          <p className="m-0 max-w-[380px] text-[15px] text-ink">Vous ne trouvez pas la vôtre ? Écrivez-nous, un conseiller vous répond sous un jour ouvré.</p>
+          <RevealWords text={title} className="m-0 text-[clamp(27px,2.9vw,42px)] font-extrabold leading-none tracking-tighter2" />
+          <p className="m-0 max-w-[380px] text-[15px] text-ink">{intro}</p>
           <Link to="/contact" className="sweep-link self-start pb-1 text-base font-extrabold text-navy">Poser ma question →</Link>
         </div>
         <div className="border-t-2 border-navy">
-          {FAQ.map((q, i) => (
-            <details key={q.question} open={i === 0} className="group border-b border-[#D5DEE8]">
+          {items.map((q, i) => (
+            <details key={q.question} open={i === 0} className="group border-b border-rule">
               <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 text-[clamp(19px,1.6vw,21px)] font-bold [&::-webkit-details-marker]:hidden">
                 <h3 className="m-0 text-inherit">{q.question}</h3>
                 <Plus aria-hidden="true" size={26} className="flex-none transition-transform duration-500 group-open:rotate-45" />
@@ -314,18 +333,21 @@ function Faq() {
   );
 }
 
-function Reads() {
-  const reads = ['preparer-son-calendrier-fiscal', 'creer-son-entreprise-au-gabon', 'paie-obligations-cnss-cnamgs-employeurs']
+export function Reads({
+  title = 'À lire avant votre prochaine échéance.',
+  slugs = ['preparer-son-calendrier-fiscal', 'creer-son-entreprise-au-gabon', 'paie-obligations-cnss-cnamgs-employeurs'],
+}: { title?: string; slugs?: string[] }) {
+  const reads = slugs
     .map((slug) => articleBySlug(slug))
     .filter((a) => a !== undefined);
   return (
     <section id="ressources" className={`bg-white ${X} pb-[clamp(50px,6.5vw,94px)] text-navy`}>
       <div className={`${wrap} flex flex-col gap-8`}>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <RevealWords text="À lire avant votre prochaine échéance." className="m-0 text-[clamp(24px,2.4vw,35px)] font-extrabold leading-none tracking-tighter2" />
+          <RevealWords text={title} className="m-0 text-[clamp(24px,2.4vw,35px)] font-extrabold leading-none tracking-tighter2" />
           <Link to="/ressources" className="sweep-link pb-1 text-base font-bold text-navy">Tous les conseils</Link>
         </div>
-        <nav aria-label="Articles à la une" className="border-t border-[#C9D9E6]">
+        <nav aria-label="Articles à la une" className="border-t border-field">
           {reads.map((r, i) => (
             <IndexRow key={r.slug} tone="light" to={r.path} index={String(i + 1).padStart(2, '0')} title={r.title} text={`${r.category} · ${r.readingMinutes} min de lecture`} />
           ))}
@@ -335,12 +357,16 @@ function Reads() {
   );
 }
 
-function ContactCta() {
+export function ContactCta({
+  title = 'Et si nous parlions de votre entreprise ?',
+  text,
+}: { title?: string; text?: string }) {
   const { openRdv } = useRdv();
   return (
     <ParallaxBand src={teamPhoto} alt="Équipe en réunion dans un bureau lumineux" veil="bg-navy/80" className={`${X} py-[clamp(67px,9.1vw,130px)]`}>
       <div className={`${wrap} flex flex-col gap-10`}>
-        <RevealWords as="h2" text="Et si nous parlions de votre entreprise ?" className="m-0 max-w-[1000px] text-[clamp(35px,4.8vw,76px)] font-heavy leading-[0.94] tracking-tightest" />
+        <RevealWords as="h2" text={title} className="m-0 max-w-[1000px] text-[clamp(35px,4.8vw,76px)] font-heavy leading-[0.94] tracking-tightest" />
+        {text && <p className="m-0 max-w-[560px] text-[clamp(17px,1.4vw,19px)] text-mist">{text}</p>}
         <div className="flex flex-wrap items-center gap-x-10 gap-y-6">
           <ArrowButton onClick={openRdv}>Prendre rendez-vous</ArrowButton>
           <Link to="/contact" className="sweep-link pb-1 text-base font-semibold text-white">Demander un devis</Link>
@@ -364,7 +390,7 @@ export default function Home() {
       <Calendar />
       <SituationSwitcher />
       <Expertises />
-      <EInvoiceCheck />
+      <Checklist />
       <Method />
       <Testimonial />
       <Faq />

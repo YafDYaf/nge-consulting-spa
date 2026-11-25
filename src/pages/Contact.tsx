@@ -74,7 +74,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className={`bg-sun ${X} py-[clamp(39px,5.2vw,68px)] text-navy`}>
+      <section className={`bg-band ${X} py-[clamp(39px,5.2vw,68px)] text-on-band`}>
         <div className={`${wrap} flex flex-wrap items-end justify-between gap-8`}>
           <RevealWords text="Vous préférez choisir votre créneau ?" className="m-0 max-w-[760px] text-[clamp(27px,3.1vw,46px)] font-heavy leading-[0.98] tracking-tightest" />
           <div className="flex flex-col items-start gap-4">

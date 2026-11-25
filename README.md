@@ -26,3 +26,16 @@ Le domaine utilisé pour les canonical, le sitemap et les données structurées 
 Les mentions entre crochets `[ ]` dans le site : témoignages réels, équipe, numéro WhatsApp, horaires,
 dates de publication, guides PDF, pages légales. Les formulaires simulent l'envoi : à brancher sur un service
 (Formspree, Resend, agenda en ligne…). Crédits photos : `src/assets/photos/CREDITS.md`.
+
+## Thèmes de saison
+
+Les couleurs passent par des variables CSS (`src/themes.css`) : chaque thème redéfinit les mêmes jetons (`navy`, `sun`, `sky`, `band`…), et les classes Tailwind ne changent pas.
+Le registre `src/theme.ts` rattache à chaque thème son logo, sa page d'accueil, son décor et son bandeau.
+
+| Thème | Rendu |
+|---|---|
+| `nge` | Charte d'origine : bleu nuit, jaune, bleu ciel |
+| `noel` (par défaut sur cette branche) | Bleus de la charte, jaune remplacé par du rouge, logo cadeau, neige, guirlande, accueil de fin d'année (`src/pages/HomeNoel.tsx`) |
+| `noel-sapin` | Variante vert sapin et rouge |
+
+Le thème se choisit au build : `VITE_THEME=nge npm run build`. Plus tard, l'espace admin n'aura qu'à fournir cet identifiant.

@@ -10,8 +10,8 @@ export function ArrowButton({
   className = '',
   ...rest
 }: ButtonHTMLAttributes<HTMLButtonElement> & { tone?: 'sun' | 'navy'; size?: 'md' | 'lg' }) {
-  const base = tone === 'sun' ? 'bg-sun text-navy' : 'bg-navy text-white';
-  const dot = tone === 'sun' ? 'bg-navy text-sun' : 'bg-sun text-navy';
+  const base = tone === 'sun' ? 'bg-sun text-on-sun' : 'bg-navy text-white';
+  const dot = tone === 'sun' ? 'bg-navy text-sun' : 'bg-sun text-on-sun';
   const dims = size === 'lg' ? 'min-h-[52px] pl-[22px] pr-[6px] text-[15px]' : 'min-h-12 pl-5 pr-[5px] text-sm';
   const dotDims = size === 'lg' ? 'h-10 w-10' : 'h-[38px] w-[38px]';
   return (
@@ -80,7 +80,7 @@ export function Pill({
         ? 'border-navy bg-navy text-white'
         : 'border-field bg-white text-navy hover:border-navy'
       : pressed
-        ? 'border-sun bg-sun text-navy'
+        ? 'border-sun bg-sun text-on-sun'
         : 'border-navy-edge bg-transparent text-white hover:border-white';
   return (
     <button

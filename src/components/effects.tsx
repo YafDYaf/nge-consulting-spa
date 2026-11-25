@@ -106,7 +106,7 @@ export function IndexRow({
   tone?: 'dark' | 'light';
   onClick?: () => void;
 }) {
-  const line = tone === 'dark' ? 'border-navy-line' : 'border-[#C9D9E6]';
+  const line = tone === 'dark' ? 'border-navy-line' : 'border-field';
   const sweep = tone === 'dark' ? 'before:bg-sun' : 'before:bg-navy';
   const hoverText = tone === 'dark' ? 'group-hover:text-navy' : 'group-hover:text-white';
   const sub = tone === 'dark' ? 'text-mist' : 'text-ink';

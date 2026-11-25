@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom';
 import { NAV, SITE } from '../site';
 import { SERVICES } from '../data/content';
 import { Logo } from './Navbar';
+import { Garland } from './season';
 
 export const Footer = () => (
+  <>
+  <Garland />
   <footer className="bg-navy-900 px-[clamp(20px,5vw,72px)] pb-7 pt-[clamp(48px,6vw,72px)] text-[15px] text-mist-4">
     <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-9">
       <div className="flex flex-col gap-3.5">
@@ -47,4 +50,5 @@ export const Footer = () => (
       </span>
     </div>
   </footer>
+  </>
 );

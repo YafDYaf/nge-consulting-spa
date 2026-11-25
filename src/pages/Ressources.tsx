@@ -74,7 +74,7 @@ export default function Ressources() {
           {list.length > 0 ? (
             <ol className="m-0 list-none border-t-2 border-navy p-0">
               {list.map((a) => (
-                <li key={a.slug} className="border-b border-[#D5DEE8]">
+                <li key={a.slug} className="border-b border-rule">
                   <Link to={a.path} className="group grid gap-x-10 gap-y-2 py-5 text-navy no-underline transition-[padding] duration-500 ease-out hover:pl-3 md:grid-cols-[170px_1.3fr_1fr]">
                     <span className="text-sm font-bold uppercase tracking-[0.14em] text-royal">{a.category}</span>
                     <h3 className="m-0 text-[clamp(19px,1.8vw,24px)] font-extrabold leading-[1.15] tracking-[-0.02em] group-hover:underline group-hover:decoration-sky group-hover:decoration-2 group-hover:underline-offset-[6px]">{a.title}</h3>
@@ -106,7 +106,7 @@ export default function Ressources() {
           </div>
           <ul className="m-0 list-none border-t-2 border-navy p-0">
             {GUIDES.map((g) => (
-              <li key={g.title} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-[#BFD3E3] py-5">
+              <li key={g.title} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-rule-strong py-5">
                 <span className="text-[clamp(20px,1.8vw,24px)] font-extrabold tracking-[-0.015em]">{g.title}</span>
                 {/* [À fournir] : fichier PDF. */}
                 <span className="text-sm text-ink-muted">{g.meta} · bientôt disponible</span>
@@ -116,7 +116,7 @@ export default function Ressources() {
         </div>
       </section>
 
-      <section className={`bg-sun ${X} py-[clamp(45px,5.9vw,83px)] text-navy`}>
+      <section className={`bg-band ${X} py-[clamp(45px,5.9vw,83px)] text-on-band`}>
         <div className={`${wrap} flex flex-col items-start gap-8`}>
           <RevealWords text="Une question sur votre situation ? Un conseiller vous répond." className="m-0 max-w-[1000px] text-[clamp(29px,3.4vw,52px)] font-heavy leading-[0.98] tracking-tightest" />
           <ArrowButton tone="navy" onClick={openRdv}>Prendre rendez-vous</ArrowButton>

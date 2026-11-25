@@ -44,7 +44,7 @@ export default function Article() {
             <span aria-hidden="true">/</span>
             <span>{a.category}</span>
           </nav>
-          <span className="self-start rounded-full px-3.5 py-1 text-[13px] font-bold text-navy" style={{ background: CATEGORY_STYLE[a.category]?.tone ?? '#E4F1F8' }}>
+          <span className="self-start rounded-full px-3.5 py-1 text-[13px] font-bold text-navy" style={{ background: CATEGORY_STYLE[a.category]?.tone ?? 'rgb(var(--c-ice))' }}>
             {a.category}
           </span>
           <h1 className="m-0 text-[clamp(32px,4.4vw,58px)] font-extrabold leading-[1.04] tracking-[-0.035em]">{a.title}</h1>
@@ -64,7 +64,7 @@ export default function Article() {
           alt=""
           width={1200}
           height={800}
-          className="relative mx-auto -mt-[clamp(64px,9vw,110px)] block aspect-[16/10] w-full max-w-[1100px] object-[50%_30%] sm:aspect-[21/9] rounded-[28px] object-cover shadow-[0_30px_70px_rgba(4,14,28,0.18)]"
+          className="relative mx-auto -mt-[clamp(64px,9vw,110px)] block aspect-[16/10] w-full max-w-[1100px] object-[50%_30%] sm:aspect-[21/9] rounded-[28px] object-cover shadow-[0_30px_70px_rgb(var(--c-shadow)/0.18)]"
         />
 
         <div className="mx-auto mt-[clamp(40px,6vw,72px)] grid max-w-[1100px] gap-12 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -101,7 +101,7 @@ export default function Article() {
             </aside>
 
             {a.sources.length > 0 && (
-              <div className="mt-10 border-t border-[#D5DEE8] pt-6">
+              <div className="mt-10 border-t border-rule pt-6">
                 <h2 className="m-0 pb-3 text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">Sources officielles</h2>
                 <ul className="m-0 flex list-none flex-col gap-2 p-0 text-[15px]">
                   {a.sources.map((s) => (
@@ -120,7 +120,7 @@ export default function Article() {
           </div>
         </div>
 
-        <section className="mx-auto mt-[clamp(56px,8vw,96px)] flex max-w-[1100px] flex-col gap-6 border-t border-[#D5DEE8] pt-10">
+        <section className="mx-auto mt-[clamp(56px,8vw,96px)] flex max-w-[1100px] flex-col gap-6 border-t border-rule pt-10">
           <h2 className="m-0 text-[clamp(24px,2.6vw,34px)] font-extrabold tracking-[-0.025em]">À lire aussi</h2>
           <nav aria-label="Articles liés" className="border-t-2 border-navy">
             {related.map((r, i) => (

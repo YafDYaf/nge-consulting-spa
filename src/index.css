@@ -1,3 +1,5 @@
+@import './themes.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,12 +21,12 @@
   button:focus-visible,
   input:focus-visible,
   summary:focus-visible {
-    outline: 3px solid theme("colors.sun.DEFAULT");
+    outline: 3px solid rgb(var(--c-sun));
     outline-offset: 3px;
   }
   select:focus-visible,
   textarea:focus-visible {
-    outline: 3px solid theme("colors.sky.DEFAULT");
+    outline: 3px solid rgb(var(--c-sky));
     outline-offset: 2px;
   }
 }
@@ -67,7 +69,7 @@
   }
   .lift:hover {
     transform: translateY(-6px);
-    box-shadow: 0 24px 48px rgba(4, 14, 28, 0.28);
+    box-shadow: 0 24px 48px rgb(var(--c-shadow) / 0.28);
   }
 
   /* Flèche des boutons pilule */
@@ -105,7 +107,7 @@
     transition: color 0.35s ease, padding-left 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .value-row:hover .value-name {
-    color: theme("colors.sun.DEFAULT");
+    color: rgb(var(--c-sun));
     padding-left: 12px;
   }
 
@@ -145,7 +147,7 @@
     border-bottom-color: color-mix(in srgb, currentColor 30%, transparent);
   }
   .line-input:focus {
-    border-bottom-color: theme("colors.sun.DEFAULT");
+    border-bottom-color: rgb(var(--c-sun));
   }
 
   .h-display {
@@ -168,5 +170,76 @@
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Décor de saison (thèmes de fêtes) ---------- */
+@layer components {
+  .snowfield {
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  .snowflake {
+    position: absolute;
+    top: -12px;
+    border-radius: 9999px;
+    background: #fff;
+    animation-name: snow;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes snow {
+    to {
+      transform: translate3d(var(--drift, 0), 900px, 0);
+    }
+  }
+  /* Ampoules de la guirlande lumineuse */
+  .bulb {
+    animation: twinkle-bulb 2.6s ease-in-out infinite;
+  }
+  @keyframes twinkle-bulb {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 10px 1px currentColor;
+    }
+    50% {
+      opacity: 0.35;
+      box-shadow: none;
+    }
+  }
+  .twinkle {
+    animation: twinkle-star 3.4s ease-in-out infinite;
+  }
+  @keyframes twinkle-star {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.7);
+    }
+    50% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .snowfield {
+      display: none;
+    }
+    .bulb,
+    .twinkle {
+      animation: none;
+    }
+  }
+  /* Frise : rouge, blanc, bleu ciel */
+  .garland {
+    height: 5px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgb(var(--c-sun)) 0 28px,
+      #fff 28px 36px,
+      rgb(var(--c-sky)) 36px 64px,
+      #fff 64px 72px
+    );
   }
 }

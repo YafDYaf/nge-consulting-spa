@@ -59,7 +59,7 @@ export default function Besoins() {
         >
           <div className={`${wrap} flex ${i % 2 ? 'justify-end' : ''}`}>
             <article className="flex max-w-[680px] flex-col gap-5">
-              <span className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: p.bg === '#E4F1F8' ? '#7FD6FA' : p.bg }}>
+              <span className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: p.bg === 'rgb(var(--c-ice))' ? 'rgb(var(--c-sky-soft))' : p.bg }}>
                 Profil {String(i + 1).padStart(2, '0')}
               </span>
               <RevealWords text={p.title} className="m-0 text-[clamp(32px,3.7vw,54px)] font-heavy leading-[0.95] tracking-tightest" />

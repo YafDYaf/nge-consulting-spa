@@ -59,7 +59,7 @@ export default function Expertises() {
                   </div>
                 ))}
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-5 border-t border-[#D5DEE8] pt-8">
+              <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-5 border-t border-rule pt-8">
                 <p className="m-0 max-w-[560px] text-[15px] text-ink">
                   <strong className="text-navy">Pour qui :</strong> {s.who}
                 </p>
@@ -86,7 +86,7 @@ export default function Expertises() {
         </div>
       </section>
 
-      <section className={`bg-sun ${X} py-[clamp(45px,5.9vw,83px)] text-navy`}>
+      <section className={`bg-band ${X} py-[clamp(45px,5.9vw,83px)] text-on-band`}>
         <div className={`${wrap} flex flex-col items-start gap-8`}>
           <RevealWords text="Vous hésitez entre plusieurs expertises ? Parlons-en trente minutes." className="m-0 max-w-[1000px] text-[clamp(29px,3.4vw,52px)] font-heavy leading-[0.98] tracking-tightest" />
           <ArrowButton tone="navy" onClick={openRdv}>Prendre rendez-vous</ArrowButton>

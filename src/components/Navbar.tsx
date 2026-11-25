@@ -5,13 +5,14 @@ import { ArrowUpRight, Mail, Menu, Phone, X } from 'lucide-react';
 import { NAV, SITE } from '../site';
 import { useRdv } from './rdv-context';
 import logo from '../assets/logo-nge.png';
+import { SeasonLogo } from './season';
 
 export function Logo({ alt = `Logo ${SITE.name}`, size = 'md' }: { alt?: string; size?: 'sm' | 'md' }) {
   const box = size === 'sm' ? 'h-9 w-9' : 'h-11 w-11';
   const img = size === 'sm' ? 'h-[21px] w-[24px]' : 'h-[25px] w-[29px]';
   return (
     <span className={`flex flex-none items-center justify-center rounded-full bg-white ${box}`}>
-      <img src={logo} alt={alt} width={29} height={25} className={`object-contain ${img}`} />
+      <SeasonLogo fallback={logo} alt={alt} className={`object-contain ${img}`} />
     </span>
   );
 }
@@ -65,7 +66,7 @@ export const Navbar = () => {
           <button
             type="button"
             onClick={openRdv}
-            className="arrow-btn hidden min-h-11 items-center gap-2.5 rounded-full border-0 bg-sun pl-[18px] pr-1 text-sm font-bold text-navy sm:inline-flex"
+            className="arrow-btn hidden min-h-11 items-center gap-2.5 rounded-full border-0 bg-sun pl-[18px] pr-1 text-sm font-bold text-on-sun sm:inline-flex"
           >
             Prendre rendez-vous
             <span className="arrow flex h-9 w-9 items-center justify-center rounded-full bg-navy text-sun">
@@ -121,7 +122,7 @@ export const Navbar = () => {
                   close();
                   openRdv();
                 }}
-                className="min-h-[52px] w-full rounded-full border-0 bg-sun text-base font-bold text-navy"
+                className="min-h-[52px] w-full rounded-full border-0 bg-sun text-base font-bold text-on-sun"
               >
                 Prendre rendez-vous
               </button>

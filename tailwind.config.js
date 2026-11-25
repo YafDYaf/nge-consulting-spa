@@ -1,24 +1,35 @@
+/** Couleur thémable : « rgb(var(--c-x) / alpha) » pour garder les modificateurs d'opacité (bg-navy/80…). */
+const c = (name) => `rgb(var(--c-${name}) / <alpha-value>)`;
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      // Couleurs pilotées par des variables CSS (src/themes.css) : chaque thème (NGE, Noël…)
+      // redéfinit les mêmes variables. Les noms de jetons restent ceux de la charte NGE :
+      // navy = fond sombre, sun = accent principal, sky = accent secondaire, royal = accent profond.
       colors: {
-        // Palette N.G.E Consulting (design « D2 »)
         navy: {
-          DEFAULT: "#0E2238", // fond principal
-          800: "#1B3653", // surfaces sur fond nuit
-          900: "#0A1A2C", // pied de page
-          line: "#22395A", // filets sur fond nuit
-          edge: "#4A6684", // contours de boutons
+          DEFAULT: c("navy"),
+          800: c("navy-800"),
+          900: c("navy-900"),
+          line: c("navy-line"),
+          edge: c("navy-edge"),
         },
-        sun: { DEFAULT: "#FCD116", soft: "#FDE57A", deep: "#C7A400" },
-        sky: { DEFAULT: "#01AAF2", soft: "#7FD6FA" },
-        royal: "#1C5FA4",
-        ice: { DEFAULT: "#E4F1F8", 2: "#D9E6F0", 3: "#C8DCEA", pale: "#F4F8FB" },
-        ink: { DEFAULT: "#33475E", muted: "#4D6079" },
-        mist: { DEFAULT: "#D3DEEA", 2: "#CFE4F2", 3: "#A9BDD2", 4: "#B6C6D8" },
-        field: "#C9D9E6",
+        sun: { DEFAULT: c("sun"), soft: c("sun-soft"), deep: c("sun-deep") },
+        "on-sun": c("on-sun"), // texte posé sur l'accent principal
+        // Grands bandeaux d'appel (calendrier, « Prenons rendez-vous »…)
+        band: { DEFAULT: c("band"), line: c("band-line") },
+        "on-band": c("on-band"),
+        sky: { DEFAULT: c("sky"), soft: c("sky-soft") },
+        royal: c("royal"),
+        ice: { DEFAULT: c("ice"), 2: c("ice-2"), 3: c("ice-3"), pale: c("ice-pale") },
+        ink: { DEFAULT: c("ink"), muted: c("ink-muted") },
+        mist: { DEFAULT: c("mist"), 2: c("mist-2"), 3: c("mist-3"), 4: c("mist-4") },
+        field: c("field"),
+        gold: c("gold"), // touches décoratives de saison
+        rule: { DEFAULT: c("rule"), strong: c("rule-strong") }, // filets sur fond clair
       },
       fontFamily: {
         sans: ['"Figtree Variable"', "Figtree", '"Segoe UI"', "Arial", "sans-serif"],

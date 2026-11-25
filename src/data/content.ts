@@ -28,11 +28,11 @@ export type Situation = {
 };
 
 export const SITUATIONS: Situation[] = [
-  { label: 'Je lance mon entreprise', text: 'Choix de la forme juridique, statuts, dossier au guichet unique de l’ANPI : nous préparons votre démarrage et vos premières obligations.', service: 'création d’entreprise', cta: 'Présenter mon projet', bg: '#01AAF2', fg: '#0E2238', line: '#01AAF2' },
-  { label: 'Mes comptes sont en retard', text: 'Pièces dispersées, banque non rapprochée, bilan qui approche : nous remettons votre comptabilité à jour, puis nous la tenons chaque mois.', service: 'comptabilité et suivi financier', cta: 'Remettre mes comptes à jour', bg: '#0E2238', fg: '#FFFFFF', line: '#3D5876' },
-  { label: 'J’ai peur d’oublier une échéance', text: 'TVA, patente, retenues, résultats : nous tenons votre calendrier fiscal et préparons chaque déclaration avant la date.', service: 'fiscalité et déclarations', cta: 'Faire le point sur mes échéances', bg: '#FFFFFF', fg: '#0E2238', line: '#FFFFFF' },
-  { label: 'J’embauche', text: 'Contrats, bulletins, CNSS et CNAMGS : nous organisons votre paie pour qu’elle tombe juste, chaque mois.', service: 'paie et gestion sociale', cta: 'Organiser ma paie', bg: '#E4F1F8', fg: '#0E2238', line: '#E4F1F8' },
-  { label: 'Je veux mieux piloter', text: 'Budget, trésorerie, marges : nous transformons vos comptes en quelques indicateurs que vous suivez chaque mois.', service: 'conseil et pilotage', cta: 'Parler de mes indicateurs', bg: '#1C5FA4', fg: '#FFFFFF', line: '#1C5FA4' },
+  { label: 'Je lance mon entreprise', text: 'Choix de la forme juridique, statuts, dossier au guichet unique de l’ANPI : nous préparons votre démarrage et vos premières obligations.', service: 'création d’entreprise', cta: 'Présenter mon projet', bg: 'rgb(var(--c-sky))', fg: 'rgb(var(--c-navy))', line: 'rgb(var(--c-sky))' },
+  { label: 'Mes comptes sont en retard', text: 'Pièces dispersées, banque non rapprochée, bilan qui approche : nous remettons votre comptabilité à jour, puis nous la tenons chaque mois.', service: 'comptabilité et suivi financier', cta: 'Remettre mes comptes à jour', bg: 'rgb(var(--c-navy))', fg: '#FFFFFF', line: 'rgb(var(--c-navy-edge))' },
+  { label: 'J’ai peur d’oublier une échéance', text: 'TVA, patente, retenues, résultats : nous tenons votre calendrier fiscal et préparons chaque déclaration avant la date.', service: 'fiscalité et déclarations', cta: 'Faire le point sur mes échéances', bg: '#FFFFFF', fg: 'rgb(var(--c-navy))', line: '#FFFFFF' },
+  { label: 'J’embauche', text: 'Contrats, bulletins, CNSS et CNAMGS : nous organisons votre paie pour qu’elle tombe juste, chaque mois.', service: 'paie et gestion sociale', cta: 'Organiser ma paie', bg: 'rgb(var(--c-ice))', fg: 'rgb(var(--c-navy))', line: 'rgb(var(--c-ice))' },
+  { label: 'Je veux mieux piloter', text: 'Budget, trésorerie, marges : nous transformons vos comptes en quelques indicateurs que vous suivez chaque mois.', service: 'conseil et pilotage', cta: 'Parler de mes indicateurs', bg: 'rgb(var(--c-royal))', fg: '#FFFFFF', line: 'rgb(var(--c-royal))' },
 ];
 
 export const EINVOICE_CHECKS = [
@@ -58,10 +58,10 @@ export const MISSION_STEPS = [
 
 // Témoignages à recueillir auprès de clients réels, avec leur accord écrit. Ne jamais en inventer.
 export const REVIEWS = [
-  { quote: '[Ce qu’a changé le suivi mensuel pour ce dirigeant, en deux phrases.]', name: '[Prénom Nom]', role: 'Gérant de PME, Libreville', initials: 'PN', bg: '#FFFFFF', fg: '#0E2238', mark: '#01AAF2' },
-  { quote: '[Comment s’est passée la création de la société, du premier rendez-vous à l’immatriculation.]', name: '[Prénom Nom]', role: 'Créatrice d’entreprise', initials: 'PN', bg: '#FCD116', fg: '#0E2238', mark: '#0E2238' },
-  { quote: '[Ce que la reprise de la paie a simplifié au quotidien.]', name: '[Prénom Nom]', role: 'Directrice administrative', initials: 'PN', bg: '#1B3653', fg: '#FFFFFF', mark: '#FCD116' },
-  { quote: '[Une échéance fiscale bien préparée, racontée par le client.]', name: '[Prénom Nom]', role: 'Commerçant, régime réel', initials: 'PN', bg: '#E4F1F8', fg: '#0E2238', mark: '#1C5FA4' },
+  { quote: '[Ce qu’a changé le suivi mensuel pour ce dirigeant, en deux phrases.]', name: '[Prénom Nom]', role: 'Gérant de PME, Libreville', initials: 'PN', bg: '#FFFFFF', fg: 'rgb(var(--c-navy))', mark: 'rgb(var(--c-sky))' },
+  { quote: '[Comment s’est passée la création de la société, du premier rendez-vous à l’immatriculation.]', name: '[Prénom Nom]', role: 'Créatrice d’entreprise', initials: 'PN', bg: 'rgb(var(--c-sun))', fg: 'rgb(var(--c-navy))', mark: 'rgb(var(--c-navy))' },
+  { quote: '[Ce que la reprise de la paie a simplifié au quotidien.]', name: '[Prénom Nom]', role: 'Directrice administrative', initials: 'PN', bg: 'rgb(var(--c-navy-800))', fg: '#FFFFFF', mark: 'rgb(var(--c-sun))' },
+  { quote: '[Une échéance fiscale bien préparée, racontée par le client.]', name: '[Prénom Nom]', role: 'Commerçant, régime réel', initials: 'PN', bg: 'rgb(var(--c-ice))', fg: 'rgb(var(--c-navy))', mark: 'rgb(var(--c-royal))' },
 ];
 
 export const FAQ = [
@@ -176,9 +176,9 @@ export const TEAM = [
 ];
 
 export const PROFILES = [
-  { title: 'Créateurs d’entreprise', question: 'Vous souhaitez démarrer votre activité et comprendre les étapes essentielles ?', text: 'Nous vous aidons à préparer votre projet, organiser vos formalités et anticiper vos premières obligations de gestion.', items: ['Choix de la forme juridique et statuts', 'Dossier au guichet unique de l’ANPI', 'Organisation de votre gestion dès le premier mois'], cta: 'Je lance mon entreprise', photo: photoCreation, photoAlt: 'Jeune entrepreneur devant son établissement', bg: '#01AAF2' },
-  { title: 'TPE et petites entreprises', question: 'Vous gérez de nombreuses tâches au quotidien et manquez de temps pour votre activité ?', text: 'Structurez votre comptabilité, préparez vos échéances et organisez le suivi administratif de votre entreprise.', items: ['Tenue comptable et rapprochements bancaires', 'Calendrier fiscal et déclarations', 'Paie de vos premiers salariés'], cta: 'Organiser ma gestion', photo: photoTpe, photoAlt: 'Gérante de petite entreprise souriante à son bureau, carnet et ordinateur ouverts', bg: '#E4F1F8' },
-  { title: 'PME et entreprises en croissance', question: 'Votre organisation se développe et vos besoins de gestion deviennent plus importants ?', text: 'Améliorez la structuration de vos processus comptables, sociaux et financiers avec un accompagnement adapté.', items: ['Révision et états financiers SYSCOHADA', 'Paie et déclarations CNSS et CNAMGS', 'Tableaux de bord, budgets et trésorerie'], cta: 'Accompagner ma croissance', photo: photoPme, photoAlt: 'Dirigeant animant une réunion avec son équipe autour d’une table', bg: '#FCD116' },
+  { title: 'Créateurs d’entreprise', question: 'Vous souhaitez démarrer votre activité et comprendre les étapes essentielles ?', text: 'Nous vous aidons à préparer votre projet, organiser vos formalités et anticiper vos premières obligations de gestion.', items: ['Choix de la forme juridique et statuts', 'Dossier au guichet unique de l’ANPI', 'Organisation de votre gestion dès le premier mois'], cta: 'Je lance mon entreprise', photo: photoCreation, photoAlt: 'Jeune entrepreneur devant son établissement', bg: 'rgb(var(--c-sky))' },
+  { title: 'TPE et petites entreprises', question: 'Vous gérez de nombreuses tâches au quotidien et manquez de temps pour votre activité ?', text: 'Structurez votre comptabilité, préparez vos échéances et organisez le suivi administratif de votre entreprise.', items: ['Tenue comptable et rapprochements bancaires', 'Calendrier fiscal et déclarations', 'Paie de vos premiers salariés'], cta: 'Organiser ma gestion', photo: photoTpe, photoAlt: 'Gérante de petite entreprise souriante à son bureau, carnet et ordinateur ouverts', bg: 'rgb(var(--c-ice))' },
+  { title: 'PME et entreprises en croissance', question: 'Votre organisation se développe et vos besoins de gestion deviennent plus importants ?', text: 'Améliorez la structuration de vos processus comptables, sociaux et financiers avec un accompagnement adapté.', items: ['Révision et états financiers SYSCOHADA', 'Paie et déclarations CNSS et CNAMGS', 'Tableaux de bord, budgets et trésorerie'], cta: 'Accompagner ma croissance', photo: photoPme, photoAlt: 'Dirigeant animant une réunion avec son équipe autour d’une table', bg: 'rgb(var(--c-sun))' },
 ];
 
 export const ADVICE_BY_NEED = [

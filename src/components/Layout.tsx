@@ -4,6 +4,7 @@ import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { RdvModal } from './RdvModal';
 import { RdvContext } from './rdv-context';
+import { SeasonRibbon } from './season';
 import { metaFor } from '../seo';
 import { SITE_URL } from '../site';
 
@@ -44,10 +45,11 @@ export function Layout() {
 
   return (
     <RdvContext.Provider value={api}>
-      <a href="#contenu" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:h-auto focus:w-auto focus:rounded-full focus:bg-sun focus:px-5 focus:py-3 focus:font-bold focus:text-navy">
+      <a href="#contenu" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:h-auto focus:w-auto focus:rounded-full focus:bg-sun focus:px-5 focus:py-3 focus:font-bold focus:text-on-sun">
         Aller au contenu
       </a>
-      <div className="overflow-x-clip bg-navy leading-[1.55] text-white">
+      <div className="relative overflow-x-clip bg-navy leading-[1.55] text-white">
+        <SeasonRibbon />
         <Navbar />
         <main id="contenu">
           <Outlet />

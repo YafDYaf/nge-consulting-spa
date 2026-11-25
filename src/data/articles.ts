@@ -26,12 +26,12 @@ export type Article = {
 };
 
 export const CATEGORY_STYLE: Record<string, { tone: string; photo: string }> = {
-  Entrepreneuriat: { tone: '#E4F1F8', photo: photoCreation },
-  Comptabilité: { tone: '#C8DCEA', photo: photoComptabilite },
-  Fiscalité: { tone: '#FCD116', photo: photoFiscalite },
-  'Paie & social': { tone: '#01AAF2', photo: photoPaie },
-  Gestion: { tone: '#B9C9D9', photo: photoConseil },
-  Accompagnement: { tone: '#D9E6F0', photo: photoEquipe },
+  Entrepreneuriat: { tone: 'rgb(var(--c-ice))', photo: photoCreation },
+  Comptabilité: { tone: 'rgb(var(--c-ice-3))', photo: photoComptabilite },
+  Fiscalité: { tone: 'rgb(var(--c-sun))', photo: photoFiscalite },
+  'Paie & social': { tone: 'rgb(var(--c-sky))', photo: photoPaie },
+  Gestion: { tone: 'rgb(var(--c-mist-4))', photo: photoConseil },
+  Accompagnement: { tone: 'rgb(var(--c-ice-2))', photo: photoEquipe },
 };
 
 const files = import.meta.glob('../../content/articles/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;

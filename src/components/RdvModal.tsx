@@ -74,10 +74,10 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex animate-veil items-start justify-center overflow-y-auto bg-[rgba(8,20,36,0.66)] px-3 py-[clamp(16px,5vh,56px)] text-navy backdrop-blur-[6px]"
+      className="fixed inset-0 z-[100] flex animate-veil items-start justify-center overflow-y-auto bg-navy-900/70 px-3 py-[clamp(16px,5vh,56px)] text-navy backdrop-blur-[6px]"
       onMouseDown={(e) => e.target === e.currentTarget && close()}
     >
-      <div role="dialog" aria-modal="true" aria-labelledby="rdv-titre" className="w-[min(1040px,100%)] animate-modal overflow-hidden rounded-[28px] bg-white shadow-[0_40px_100px_rgba(2,10,22,0.5)]">
+      <div role="dialog" aria-modal="true" aria-labelledby="rdv-titre" className="w-[min(1040px,100%)] animate-modal overflow-hidden rounded-[28px] bg-white shadow-[0_40px_100px_rgb(var(--c-shadow)/0.5)]">
         <div className="flex items-center justify-between gap-4 bg-navy px-[clamp(20px,3vw,32px)] py-[22px] text-white">
           <div className="flex flex-col gap-0.5">
             <h2 id="rdv-titre" className="m-0 text-[clamp(22px,2.4vw,28px)] font-extrabold tracking-[-0.02em]">Prendre rendez-vous</h2>
@@ -92,13 +92,13 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
 
         {step === 1 && (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))]">
-            <div className="flex flex-col gap-4 border-r border-[#E1E9F1] p-[clamp(20px,3vw,32px)]">
+            <div className="flex flex-col gap-4 border-r border-rule p-[clamp(20px,3vw,32px)]">
               <div className="flex items-center justify-between gap-3">
-                <button type="button" onClick={() => go(-1)} disabled={atStart} aria-label="Mois précédent" className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-[#D5DEE8] bg-white disabled:opacity-35">
+                <button type="button" onClick={() => go(-1)} disabled={atStart} aria-label="Mois précédent" className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-rule bg-white disabled:opacity-35">
                   <ChevronLeft aria-hidden="true" size={16} strokeWidth={2.4} />
                 </button>
                 <span className="text-[19px] font-extrabold capitalize" aria-live="polite">{MONTHS[view.m]} {view.y}</span>
-                <button type="button" onClick={() => go(1)} disabled={atEnd} aria-label="Mois suivant" className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-[#D5DEE8] bg-white disabled:opacity-35">
+                <button type="button" onClick={() => go(1)} disabled={atEnd} aria-label="Mois suivant" className="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-rule bg-white disabled:opacity-35">
                   <ChevronRight aria-hidden="true" size={16} strokeWidth={2.4} />
                 </button>
               </div>
@@ -125,7 +125,7 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
                         setSlot(null);
                       }}
                       className={`aspect-square min-h-10 rounded-xl border-0 text-[15px] transition-[background-color,color,transform] duration-200 ${
-                        on ? 'bg-navy font-bold text-sun' : avail ? 'bg-ice font-bold text-navy hover:scale-[1.06]' : 'bg-transparent font-normal text-[#9AAABB]'
+                        on ? 'bg-navy font-bold text-sun' : avail ? 'bg-ice font-bold text-navy hover:scale-[1.06]' : 'bg-transparent font-normal text-ink-muted/50'
                       }`}
                     >
                       {d}
@@ -162,7 +162,7 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
                           aria-pressed={on}
                           onClick={() => setSlot(i)}
                           className={`min-h-12 rounded-[14px] border-[1.5px] text-[15px] font-bold ${
-                            on ? 'border-sun bg-sun text-navy' : taken ? 'border-[#E1E9F1] bg-[#F4F7FA] text-[#8A9AAB] line-through' : 'border-field bg-white text-navy'
+                            on ? 'border-sun bg-sun text-on-sun' : taken ? 'border-rule bg-ice-pale text-ink-muted/70 line-through' : 'border-field bg-white text-navy'
                           }`}
                         >
                           {l}
@@ -171,14 +171,14 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
                     })}
                   </div>
                 ) : (
-                  <p className="m-0 rounded-2xl bg-[#F1F6FA] p-[18px] text-[15px] text-ink">Choisissez d’abord un jour dans le calendrier.</p>
+                  <p className="m-0 rounded-2xl bg-ice-pale p-[18px] text-[15px] text-ink">Choisissez d’abord un jour dans le calendrier.</p>
                 )}
               </div>
-              <div className="mt-auto flex flex-col gap-3.5 border-t border-[#E1E9F1] pt-[18px]">
+              <div className="mt-auto flex flex-col gap-3.5 border-t border-rule pt-[18px]">
                 <span className="text-[15px] text-ink">
                   {ready ? `Votre créneau : ${slotLong}, ${MODES[mode].toLowerCase()}.` : 'Aucun créneau choisi pour l’instant.'}
                 </span>
-                <button type="button" disabled={!ready} onClick={() => setStep(2)} className="min-h-14 rounded-full border-0 bg-sun text-base font-extrabold text-navy disabled:opacity-45">
+                <button type="button" disabled={!ready} onClick={() => setStep(2)} className="min-h-14 rounded-full border-0 bg-sun text-base font-extrabold text-on-sun disabled:opacity-45">
                   Continuer
                 </button>
               </div>
@@ -195,7 +195,7 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
               setStep(3);
             }}
           >
-            <div className="flex flex-col gap-3.5 bg-[#F1F6FA] p-[clamp(20px,3vw,32px)]">
+            <div className="flex flex-col gap-3.5 bg-ice-pale p-[clamp(20px,3vw,32px)]">
               <span className="text-sm font-bold text-ink-muted">Votre créneau</span>
               <span className="text-[26px] font-extrabold leading-[1.15] tracking-[-0.02em]">{slotLong}</span>
               <span className="text-base text-ink">{MODES[mode]}</span>
@@ -241,7 +241,7 @@ export function RdvModal({ open, onClose }: { open: boolean; onClose: () => void
                 <input required type="checkbox" className="mt-px h-5 w-5 flex-none accent-navy" />
                 J’accepte que N.G.E Consulting utilise ces informations pour me recontacter.
               </label>
-              <button type="submit" className="min-h-14 rounded-full border-0 bg-sun text-base font-extrabold text-navy">
+              <button type="submit" className="min-h-14 rounded-full border-0 bg-sun text-base font-extrabold text-on-sun">
                 Envoyer la demande
               </button>
             </div>
