@@ -1,6 +1,8 @@
 // Sapins « tissu découpé » : une étoffe rouge fendue et retroussée qui laisse voir un feutre vert.
-// Illustrations SVG dessinées à la main (aucune image externe), utilisées par le thème « noel-sapin ».
+// L'étoffe est dessinée en SVG ; sous elle, une vraie photo de branches de sapin (Unsplash, voir CREDITS.md).
+// Utilisé par le thème « noel-sapin ».
 import { useId } from 'react';
+import branches from '../assets/photos/sapin-branches.webp';
 
 /** Points d'une étoile à cinq branches. */
 function starPoints(cx: number, cy: number, R: number, r: number) {
@@ -22,12 +24,14 @@ const GOLD = '#E8B84A';
 const FLAP = 'M300,205 C215,285 105,365 38,432 C8,466 12,536 56,558 C88,573 104,552 92,534 L116,540 Z';
 const ROLL = 'M38,432 C8,466 12,536 56,558 C34,534 30,480 58,448 Z';
 
-/** Grand sapin : l'étoffe rouge, le sapin de feutre vert, l'étoile découpée, des baies et des paillettes. */
+/** Grand sapin : l'étoffe rouge fendue laisse voir un vrai sapin illuminé, par la fente et par l'étoile découpée. */
 export function PeelTree({ className = '', slice = false }: { className?: string; slice?: boolean }) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const u = (name: string) => `url(#${id}${name})`;
   const star = starPoints(300, 140, 38, 16);
   const mirror = 'matrix(-1 0 0 1 600 0)';
+  // L'étoffe : tout sauf la fente du sapin et l'étoile découpée (règle evenodd).
+  const fabric = `M0,0 H600 V550 H490 L300,205 L110,550 H0 Z M${star.replace(/ /g, ' L')} Z`;
   return (
     <svg viewBox="0 0 600 720" preserveAspectRatio={slice ? 'xMidYMin slice' : 'xMidYMid meet'} aria-hidden="true" className={className}>
       <defs>
@@ -58,21 +62,28 @@ export function PeelTree({ className = '', slice = false }: { className?: string
         <clipPath id={`${id}tree`}>
           <path d="M300,205 L110,550 L0,550 L0,720 L600,720 L600,550 L490,550 Z" />
         </clipPath>
+        <clipPath id={`${id}open`}>
+          <path d="M300,205 L110,550 L0,550 L0,720 L600,720 L600,550 L490,550 Z" />
+          <polygon points={star} />
+        </clipPath>
       </defs>
 
-      {/* Étoffe rouge et feutre vert */}
+      {/* Sous l'étoffe : le vrai sapin (photo), légèrement teinté pour rester dans le vert */}
       <rect width="600" height="720" fill={u('felt')} />
-      <path d="M0,0 H600 V550 H490 L300,205 L110,550 H0 Z" fill={u('weave')} />
+      <g clipPath={u('open')}>
+        <image href={branches} x="0" y="40" width="600" height="700" preserveAspectRatio="xMidYMid slice" />
+        <rect width="600" height="720" fill={GREEN_DARK} opacity="0.18" />
+      </g>
+      <path d={fabric} fillRule="evenodd" fill={u('weave')} />
 
       {/* Ombre portée par l'étoffe sur le feutre */}
       <g clipPath={u('tree')} opacity="0.55">
         <path d="M300,205 L110,550 L0,550 L0,566 L128,566 L300,232 L472,566 L600,566 L600,550 L490,550 Z" fill="#000" filter={u('blur')} />
       </g>
 
-      {/* Étoile découpée : on voit le feutre, avec une ombre intérieure */}
-      <polygon points={star} fill={GREEN_DARK} />
+      {/* Étoile découpée : on voit le sapin, avec une ombre intérieure */}
       <g clipPath={u('star')}>
-        <polygon points={star} fill={GREEN} transform="translate(2 4)" />
+        <polygon points={star} fill="none" stroke="#000" strokeOpacity="0.45" strokeWidth="8" transform="translate(2 3)" />
       </g>
 
       {/* Rabats retroussés, gauche puis droit */}
@@ -109,34 +120,7 @@ export function PeelTree({ className = '', slice = false }: { className?: string
       ))}
 
       {/* Grain du tissu */}
-      <rect width="600" height="720" filter={u('noise')} opacity="0.16" style={{ mixBlendMode: 'multiply' }} />
-    </svg>
-  );
-}
-
-/** Petit sapin de feutre aux bords retroussés, avec son étoile dorée. */
-export function MiniTree({ className = '' }: { className?: string }) {
-  const id = useId().replace(/[^a-zA-Z0-9_-]/g, '');
-  return (
-    <svg viewBox="0 0 100 120" aria-hidden="true" className={className}>
-      <defs>
-        <linearGradient id={`${id}g`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor={GREEN} />
-          <stop offset="1" stopColor={GREEN_DARK} />
-        </linearGradient>
-        <linearGradient id={`${id}f`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor={RED_DARK} />
-          <stop offset="1" stopColor={RED_LIGHT} />
-        </linearGradient>
-      </defs>
-      <polygon points={starPoints(50, 13, 10, 4.2)} fill={GOLD} />
-      <path d="M50,27 L16,104 L84,104 Z" fill={`url(#${id}g)`} />
-      {['', 'matrix(-1 0 0 1 100 0)'].map((t) => (
-        <g key={t} transform={t || undefined}>
-          <path d="M50,27 C40,50 26,72 14,88 C8,97 10,106 17,107 C22,108 24,103 21,100 L19,99 Z" fill={`url(#${id}f)`} />
-          <path d="M14,88 C9,96 10,104 16,106 C14,100 15,94 19,90 Z" fill={RED_DARK} />
-        </g>
-      ))}
+      <path d={fabric} fillRule="evenodd" filter={u('noise')} opacity="0.16" style={{ mixBlendMode: 'multiply' }} />
     </svg>
   );
 }

@@ -12,21 +12,30 @@ const rand = (i: number, salt: number) => {
 const flakes = (count: number, seed: number) =>
   Array.from({ length: count }, (_, i) => ({
     left: rand(i + seed, 1) * 100,
-    size: 3 + rand(i + seed, 2) * 4,
-    duration: 11 + rand(i + seed, 3) * 10,
+    size: 9 + rand(i + seed, 2) * 10,
+    duration: 12 + rand(i + seed, 3) * 10,
     delay: -rand(i + seed, 4) * 18,
-    drift: (rand(i + seed, 5) - 0.5) * 60,
-    opacity: 0.35 + rand(i + seed, 6) * 0.5,
+    drift: (rand(i + seed, 5) - 0.5) * 70,
+    spin: (rand(i + seed, 7) > 0.5 ? 1 : -1) * (120 + rand(i + seed, 8) * 240),
+    opacity: 0.45 + rand(i + seed, 6) * 0.45,
   }));
 
-/** Neige légère dans le bloc parent (qui doit être en position relative). */
+/** Étoile de neige à six branches, chaque branche portant deux ramures. */
+const SNOWFLAKE = Array.from({ length: 6 }, (_, k) => {
+  const a = (k * Math.PI) / 3;
+  const p = (r: number, da = 0) => `${(r * Math.sin(a + da)).toFixed(2)},${(-r * Math.cos(a + da)).toFixed(2)}`;
+  return `M0,0 L${p(10)} M${p(5.5)} L${p(8.2, 0.42)} M${p(5.5)} L${p(8.2, -0.42)}`;
+}).join(' ');
+
+/** Neige (étoiles de neige qui tombent en tournant) dans le bloc parent, en position relative. */
 export function Snow({ count = 24, seed = 0, className = '' }: { count?: number; seed?: number; className?: string }) {
   if (ACTIVE_THEME.decor !== 'snow') return null;
   return (
     <div aria-hidden="true" className={`snowfield pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
       {flakes(count, seed).map((f, i) => (
-        <span
+        <svg
           key={i}
+          viewBox="-12 -12 24 24"
           className="snowflake"
           style={{
             left: `${f.left}%`,
@@ -36,25 +45,55 @@ export function Snow({ count = 24, seed = 0, className = '' }: { count?: number;
             animationDuration: `${f.duration}s`,
             animationDelay: `${f.delay}s`,
             ['--drift' as string]: `${f.drift}px`,
+            ['--spin' as string]: `${f.spin.toFixed(0)}deg`,
           }}
-        />
+        >
+          <path d={SNOWFLAKE} fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
       ))}
     </div>
   );
 }
 
-const BULB_TONES = ['bg-sun text-sun', 'bg-white text-white', 'bg-sky text-sky'];
+const BULB_TONES = ['bg-sun text-sun', 'bg-white text-white', 'bg-sky text-sky', 'bg-gold text-gold'];
 
-/** Guirlande lumineuse accrochée en haut d'une section. */
-export function Bulbs({ count = 26 }: { count?: number }) {
+/** Points d'accroche de la guirlande (en % de la section) : elle descend en festons entre les lignes du titre. */
+const HOOKS: [number, number][] = [
+  [-3, 10],
+  [17, 30],
+  [40, 22],
+  [62, 47],
+  [84, 38],
+  [103, 64],
+];
+const SAG = 9;
+
+/** Guirlande lumineuse en festons, accrochée de part et d'autre de la section et passant derrière le texte. */
+export function Bulbs({ perSwag = 7 }: { perSwag?: number }) {
   if (ACTIVE_THEME.decor !== 'snow') return null;
+  const swags = HOOKS.slice(1).map((p1, i) => {
+    const p0 = HOOKS[i];
+    const c: [number, number] = [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2 + 2 * SAG];
+    return { p0, c, p1 };
+  });
+  const path = swags.map(({ p0, c, p1 }, i) => `${i ? '' : `M${p0[0]},${p0[1]} `}Q${c[0]},${c[1]} ${p1[0]},${p1[1]}`).join(' ');
+  const bulbs = swags.flatMap(({ p0, c, p1 }) =>
+    Array.from({ length: perSwag }, (_, j) => {
+      const t = (j + 0.5) / perSwag;
+      const q = (k: 0 | 1) => (1 - t) ** 2 * p0[k] + 2 * (1 - t) * t * c[k] + t ** 2 * p1[k];
+      return { x: q(0), y: q(1) };
+    }),
+  );
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 flex h-11 justify-between border-t-[1.5px] border-navy-edge px-[2%]">
-      {Array.from({ length: count }, (_, i) => (
-        <span key={i} className={`flex-col items-center ${i % 2 ? 'hidden sm:flex' : 'flex'}`}>
-          <span className={`w-px bg-navy-edge ${i % 4 < 2 ? 'h-2' : 'h-4'}`} />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[440px] overflow-hidden sm:h-[560px] lg:bottom-0 lg:h-auto">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+        <path d={path} fill="none" className="stroke-navy-edge" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+      </svg>
+      {bulbs.map((b, i) => (
+        <span key={i} className={`absolute flex -translate-x-1/2 flex-col items-center ${i % 2 ? 'max-sm:hidden' : ''}`} style={{ left: `${b.x}%`, top: `${b.y}%` }}>
+          <span className="h-1.5 w-px bg-navy-edge" />
           <span
-            className={`bulb h-[11px] w-2 rounded-[50%_50%_50%_50%/60%_60%_40%_40%] ${BULB_TONES[i % 3]}`}
+            className={`bulb h-3 w-2 rounded-[50%_50%_50%_50%/60%_60%_40%_40%] ${BULB_TONES[i % 4]}`}
             style={{ animationDelay: `${((i * 0.37) % 2.6).toFixed(2)}s` }}
           />
         </span>

@@ -15,3 +15,5 @@ Ce sont des photos d'illustration : elles ne doivent pas être présentées comm
 | creation.webp | https://unsplash.com/photos/gsw3AP6I-EY (Enugu, Nigeria) |
 | conseil.webp | https://unsplash.com/photos/wT-xJyLHcNA |
 | libreville-commerce.webp | https://unsplash.com/photos/Y3OTP6FwocA (Libreville, Gabon) |
+| sapin-branches.webp | https://unsplash.com/photos/Ym4my-Xj8EY (Morgane Le Breton, Rotterdam) |
+| sapin-lumieres.webp | https://unsplash.com/photos/KS6IYAwbZHM (Klim Musalimov, Moscou) |

@@ -181,16 +181,14 @@
   }
   .snowflake {
     position: absolute;
-    top: -12px;
-    border-radius: 9999px;
-    background: #fff;
+    top: -20px;
     animation-name: snow;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
   }
   @keyframes snow {
     to {
-      transform: translate3d(var(--drift, 0), 900px, 0);
+      transform: translate3d(var(--drift, 0), 900px, 0) rotate(var(--spin, 180deg));
     }
   }
   /* Ampoules de la guirlande lumineuse */

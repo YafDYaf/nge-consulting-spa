@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { ArrowButton } from '../components/ui';
 import { useRdv } from '../components/rdv-context';
 import { Bulbs, LogoGift, Snow, Star } from '../components/season';
-import { MiniTree, PeelTree } from '../components/sapins';
+import { PeelTree } from '../components/sapins';
+import sapinPhoto from '../assets/photos/sapin-lumieres.webp';
 import { ACTIVE_THEME } from '../active-theme';
 import { Calendar, Checklist, ContactCta, Expertises, Faq, OrgsMarquee, Reads, SituationSwitcher, Testimonial } from './Home';
 import { NOEL_CHECKS, NOEL_DEADLINES, NOEL_FAQ, NOEL_LETTER, NOEL_READS, NOEL_SITUATIONS, NOEL_VERDICTS } from '../data/noel';
@@ -96,7 +97,7 @@ function Letter() {
 function LetterSapin() {
   return (
     <section id="voeux" className={`felt relative overflow-hidden bg-navy-800 ${X} py-[clamp(56px,7vw,104px)]`}>
-      <div className={`${wrap} grid items-end gap-12 lg:grid-cols-[1fr_auto]`}>
+      <div className={`${wrap} grid items-center gap-12 lg:grid-cols-[1fr_auto]`}>
         <div className="flex max-w-[720px] flex-col gap-5">
           <p className="m-0 text-sm font-bold uppercase tracking-[0.2em] text-gold">Joyeux Noël</p>
           <h2 className="m-0 text-[clamp(30px,3.4vw,52px)] font-extrabold leading-none tracking-tighter2">
@@ -116,11 +117,14 @@ function LetterSapin() {
             <span className="text-[15px] text-mist-3">{NOEL_LETTER.role}</span>
           </p>
         </div>
-        <div aria-hidden="true" className="flex items-end justify-center gap-2 sm:gap-4">
-          <MiniTree className="h-24 w-20 sm:h-32 sm:w-28" />
-          <MiniTree className="h-36 w-32 sm:h-52 sm:w-44" />
-          <MiniTree className="h-28 w-24 sm:h-40 sm:w-36" />
-        </div>
+        <img
+          src={sapinPhoto}
+          alt="Grand sapin de Noël illuminé, décoré de boules rouges et d’une étoile"
+          loading="lazy"
+          width={1600}
+          height={1067}
+          className="aspect-[4/5] w-full rounded-panel object-cover object-[50%_60%] shadow-[0_40px_90px_rgb(var(--c-shadow)/0.55)] lg:w-[420px]"
+        />
       </div>
     </section>
   );
