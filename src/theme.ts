@@ -1,5 +1,5 @@
 // Registre des thèmes. Module sans dépendance : il est lu aussi par vite.config.ts.
-// Aujourd'hui le thème se choisit au build (VITE_THEME=nge|noel|noel-sapin, « noel » par défaut sur cette branche).
+// Aujourd'hui le thème se choisit au build (VITE_THEME=nge|noel|noel-sapin, « noel-sapin » par défaut sur cette branche).
 // Plus tard, l'espace admin n'aura qu'à fournir cet identifiant : couleurs (src/themes.css),
 // logo, page d'accueil, décor et bandeau de saison sont tous rattachés ici.
 
@@ -19,6 +19,8 @@ export type Theme = {
   home?: 'noel';
   /** Bandeau de saison au-dessus de l'en-tête. */
   ribbon?: string;
+  /** Sapins « tissu découpé » dans l'accueil de Noël (components/sapins.tsx). */
+  trees?: boolean;
 };
 
 const NOEL = {
@@ -35,9 +37,9 @@ export const THEMES: Record<ThemeId, Theme> = {
   // Bleus de la charte, le jaune remplacé par du rouge.
   noel: { label: 'Noël (bleu et rouge)', themeColor: '#0E2238', ...NOEL },
   // Variante vert sapin et rouge, gardée pour l'espace admin.
-  'noel-sapin': { label: 'Noël (sapin et rouge)', themeColor: '#0F2B21', ...NOEL },
+  'noel-sapin': { label: 'Noël (sapin et rouge)', themeColor: '#0F2B21', ...NOEL, trees: true },
 };
 
-export const DEFAULT_THEME: ThemeId = 'noel';
+export const DEFAULT_THEME: ThemeId = 'noel-sapin';
 
 export const isThemeId = (v: unknown): v is ThemeId => typeof v === 'string' && v in THEMES;

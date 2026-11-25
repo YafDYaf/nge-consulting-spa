@@ -35,7 +35,7 @@ Le registre `src/theme.ts` rattache à chaque thème son logo, sa page d'accueil
 | Thème | Rendu |
 |---|---|
 | `nge` | Charte d'origine : bleu nuit, jaune, bleu ciel |
-| `noel` (par défaut sur cette branche) | Bleus de la charte, jaune remplacé par du rouge, logo cadeau, neige, guirlande, accueil de fin d'année (`src/pages/HomeNoel.tsx`) |
-| `noel-sapin` | Variante vert sapin et rouge |
+| `noel` | Bleus de la charte, jaune remplacé par du rouge, logo cadeau, neige, guirlande, accueil de fin d'année (`src/pages/HomeNoel.tsx`) |
+| `noel-sapin` (par défaut sur cette branche) | Vert sapin et rouge, sapins « tissu découpé » dans l'accueil (`src/components/sapins.tsx`) |
 
 Le thème se choisit au build : `VITE_THEME=nge npm run build`. Plus tard, l'espace admin n'aura qu'à fournir cet identifiant.

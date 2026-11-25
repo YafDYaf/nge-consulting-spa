@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { ArrowButton } from '../components/ui';
 import { useRdv } from '../components/rdv-context';
 import { Bulbs, LogoGift, Snow, Star } from '../components/season';
+import { MiniTree, PeelTree } from '../components/sapins';
+import { ACTIVE_THEME } from '../active-theme';
 import { Calendar, Checklist, ContactCta, Expertises, Faq, OrgsMarquee, Reads, SituationSwitcher, Testimonial } from './Home';
 import { NOEL_CHECKS, NOEL_DEADLINES, NOEL_FAQ, NOEL_LETTER, NOEL_READS, NOEL_SITUATIONS, NOEL_VERDICTS } from '../data/noel';
 
@@ -19,8 +21,11 @@ function HeroNoel() {
       <Star twinkle className="absolute left-[8%] top-28 h-[18px] w-[18px] text-sun" />
       <Star twinkle delay={1.2} className="absolute left-[46%] top-20 h-3 w-3 text-white" />
       <Star twinkle delay={2.1} className="absolute bottom-20 left-[62%] h-3.5 w-3.5 text-sun" />
-      <LogoGift tails className="pointer-events-none absolute -right-[110px] bottom-[-60px] h-[min(64vw,500px)] w-[min(66vw,520px)] opacity-40 lg:-right-[60px] lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 lg:opacity-100" />
-      <div className={`relative ${wrap} flex flex-col gap-[clamp(24px,3.2vw,38px)]`}>
+      {!ACTIVE_THEME.trees && (
+        <LogoGift tails className="pointer-events-none absolute -right-[110px] bottom-[-60px] h-[min(64vw,500px)] w-[min(66vw,520px)] opacity-40 lg:-right-[60px] lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 lg:opacity-100" />
+      )}
+      <div className={`relative ${wrap} ${ACTIVE_THEME.trees ? 'grid items-center gap-[clamp(32px,4vw,64px)] lg:grid-cols-[1.15fr_0.85fr]' : ''}`}>
+      <div className="flex flex-col gap-[clamp(24px,3.2vw,38px)]">
         <p className="fade-d1 m-0 flex items-center gap-2.5 text-sm font-bold uppercase tracking-[0.2em] text-sky">
           <Star className="h-3 w-3 text-sun" />
           Édition de fin d’année
@@ -44,12 +49,19 @@ function HeroNoel() {
           <Link to="/contact" className="sweep-link pb-1 text-[15px] font-semibold text-white">Écrire sur WhatsApp</Link>
         </div>
       </div>
+      {ACTIVE_THEME.trees && (
+        <div className="fade-d2 relative h-[clamp(340px,62vw,560px)] overflow-hidden rounded-panel shadow-[0_40px_90px_rgb(var(--c-shadow)/0.55)] lg:h-auto lg:max-h-[620px]">
+          <PeelTree slice className="block h-full w-full lg:h-auto" />
+        </div>
+      )}
+      </div>
     </section>
   );
 }
 
 /** Le mot de fin d'année : une lettre, nouée d'un ruban rouge. */
 function Letter() {
+  if (ACTIVE_THEME.trees) return <LetterSapin />;
   return (
     <section id="voeux" className={`bg-ice ${X} pb-[clamp(50px,6.5vw,94px)] text-navy`}>
       <div className={`${wrap} relative border-t border-rule-strong pt-[clamp(45px,5.2vw,73px)]`}>
@@ -74,6 +86,40 @@ function Letter() {
             <span className="text-lg font-extrabold">{NOEL_LETTER.signature}</span>
             <span className="text-[15px] text-ink-muted">{NOEL_LETTER.role}</span>
           </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Variante « sapin » du mot de fin d'année : texte sur feutre vert, filet doré, petits sapins. */
+function LetterSapin() {
+  return (
+    <section id="voeux" className={`felt relative overflow-hidden bg-navy-800 ${X} py-[clamp(56px,7vw,104px)]`}>
+      <div className={`${wrap} grid items-end gap-12 lg:grid-cols-[1fr_auto]`}>
+        <div className="flex max-w-[720px] flex-col gap-5">
+          <p className="m-0 text-sm font-bold uppercase tracking-[0.2em] text-gold">Joyeux Noël</p>
+          <h2 className="m-0 text-[clamp(30px,3.4vw,52px)] font-extrabold leading-none tracking-tighter2">
+            Le mot de <span className="outline-text text-sun">fin d’année.</span>
+          </h2>
+          <div aria-hidden="true" className="flex max-w-[360px] items-center gap-3 text-gold">
+            <span className="h-px flex-1 bg-gold/60" />
+            <Star className="h-3.5 w-3.5" />
+            <span className="h-px flex-1 bg-gold/60" />
+          </div>
+          <p className="m-0 text-lg font-semibold">{NOEL_LETTER.greeting}</p>
+          {NOEL_LETTER.paragraphs.map((p) => (
+            <p key={p} className="m-0 text-[17px] leading-[1.7] text-mist">{p}</p>
+          ))}
+          <p className="m-0 flex flex-col pt-2">
+            <span className="text-lg font-extrabold">{NOEL_LETTER.signature}</span>
+            <span className="text-[15px] text-mist-3">{NOEL_LETTER.role}</span>
+          </p>
+        </div>
+        <div aria-hidden="true" className="flex items-end justify-center gap-2 sm:gap-4">
+          <MiniTree className="h-24 w-20 sm:h-32 sm:w-28" />
+          <MiniTree className="h-36 w-32 sm:h-52 sm:w-44" />
+          <MiniTree className="h-28 w-24 sm:h-40 sm:w-36" />
         </div>
       </div>
     </section>

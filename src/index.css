@@ -231,6 +231,12 @@
       animation: none;
     }
   }
+  /* Grain de feutre pour les fonds verts du thème sapin */
+  .felt {
+    background-image: radial-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1.2px), radial-gradient(rgb(0 0 0 / 0.12) 1px, transparent 1.2px);
+    background-size: 5px 5px, 7px 7px;
+    background-position: 0 0, 2px 3px;
+  }
   /* Frise : rouge, blanc, bleu ciel */
   .garland {
     height: 5px;
