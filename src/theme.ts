@@ -19,7 +19,7 @@ export type Theme = {
   home?: 'noel';
   /** Bandeau de saison au-dessus de l'en-tête. */
   ribbon?: string;
-  /** Sapins « tissu découpé » dans l'accueil de Noël (components/sapins.tsx). */
+  /** Photos de sapin dans l'accueil de Noël (haut de page et mot de fin d'année). */
   trees?: boolean;
 };
 

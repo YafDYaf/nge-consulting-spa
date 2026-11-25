@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowButton } from '../components/ui';
 import { useRdv } from '../components/rdv-context';
 import { Bulbs, LogoGift, Snow, Star } from '../components/season';
-import { PeelTree } from '../components/sapins';
+import branchesPhoto from '../assets/photos/sapin-branches.webp';
 import sapinPhoto from '../assets/photos/sapin-lumieres.webp';
 import { ACTIVE_THEME } from '../active-theme';
 import { Calendar, Checklist, ContactCta, Expertises, Faq, OrgsMarquee, Reads, SituationSwitcher, Testimonial } from './Home';
@@ -51,9 +51,14 @@ function HeroNoel() {
         </div>
       </div>
       {ACTIVE_THEME.trees && (
-        <div className="fade-d2 relative h-[clamp(340px,62vw,560px)] overflow-hidden rounded-panel shadow-[0_40px_90px_rgb(var(--c-shadow)/0.55)] lg:h-auto lg:max-h-[620px]">
-          <PeelTree slice className="block h-full w-full lg:h-auto" />
-        </div>
+        <img
+          src={branchesPhoto}
+          alt="Branches de sapin illuminées de petites lumières dorées"
+          width={1200}
+          height={1800}
+          fetchPriority="high"
+          className="fade-d2 block h-[clamp(340px,62vw,560px)] w-full rounded-panel object-cover object-[50%_40%] shadow-[0_40px_90px_rgb(var(--c-shadow)/0.55)] lg:h-[600px]"
+        />
       )}
       </div>
     </section>
